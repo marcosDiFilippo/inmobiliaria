@@ -1,33 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react"
+import { Footer } from "./components/Footer/Footer.jsx"
+import { Header } from "./components/Header/Header.jsx"
+import { NotFound } from "./pages/NotFound/NotFound.jsx"
+import { Login } from "./pages/Login/Login.jsx"
+import { Home } from "./pages/Home/Home.jsx"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname)
+  }, [currentPath])
+
+  let page = <></>
+
+  if (currentPath.includes("/Login")) {
+    page = <Login></Login>
+  }
+  else if (currentPath.includes("/Home")) {
+    page = <Home></Home>
+  }
+  else {
+    page = <NotFound></NotFound>
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header></Header>
+        {page}
+      <Footer></Footer>
     </>
   )
 }
