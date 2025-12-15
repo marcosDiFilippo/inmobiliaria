@@ -1,30 +1,50 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 
-export function Login() {
+export function Login({setCurrentPath}) {
     async function getData () {
-        const data = await fetch("http://localhost/inmobiliaria/backend/Data.php")
-        const text = await data.text()
+        const data = await fetch("http://localhost/inmobiliaria/backend/controllers/LoginController.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: "email=" + email + "&password=" + password,
+            credentials: "include"
+        })
+        
+        const statusCode = await data.status
 
-        console.log(text)
+        if (statusCode === 404) {
+            setAlert(<div>
+                <p>No se ha podido encontrar al usuario,</p>
+                <p>Por favor vuelva ingresar.</p>
+            </div>)
+        }
+        else {
+            setAlert(<div>
+                <p>Sesion iniciada con exito</p>
+            </div>)
+
+            const dataSession = await fetch("http://localhost/inmobiliaria/backend/auth/Session.php", {
+                method: "GET",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                credentials: "include"
+            })
+            setCurrentPath("/Home")
+        }
     }
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [alert, setAlert] = useState(<></>)
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log({
-        email,
-        password,
-        });
+        getData()
     };
-
-    const data = getData()
 
     return (
         <div className={styles.container}>
+            {alert}
             <form className={styles.form} onSubmit={handleSubmit}>
                 <h2 className={styles.title}>Iniciar sesión</h2>
                 <div className={styles.field}>

@@ -10,14 +10,12 @@ import { Tenant } from "./pages/Tenant/Tenant.jsx"
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
 
-  useEffect(() => {
-    setCurrentPath(window.location.pathname)
-  }, [currentPath])
+  console.log(currentPath)
 
   let page = <></>
   
   if (currentPath == "/") {
-    page = <Login></Login>
+    page = <Login setCurrentPath={setCurrentPath}></Login>
   }
   else if (currentPath.includes("/Home")) {
     page = <Home></Home>
