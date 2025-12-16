@@ -13,6 +13,8 @@ function App() {
   const [statusCode, setStatusCode] = useState(0)
   const [links, setLinks] = useState(<></>)
 
+  console.log(currentPath)
+
   useEffect(() => {
     fetch("http://localhost/inmobiliaria/backend/auth/Session.php", { credentials: "include" })
       .then(res => {
