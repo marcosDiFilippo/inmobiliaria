@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export function Header ({setCurrentPath, currentPath, statusCode}) {
+export function Header ({setCurrentPath, currentPath, statusCode, links}) {
     const [logOut, setLogOut] = useState(<></>)
 
     function handleClick () {
@@ -24,6 +24,7 @@ export function Header ({setCurrentPath, currentPath, statusCode}) {
         <header>
             <h1>Inmobiliaria</h1>
             {logOut}
+            {links}
         </header>
     )
 }
