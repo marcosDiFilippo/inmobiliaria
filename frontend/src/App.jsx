@@ -5,16 +5,13 @@ import { Home } from "./pages/Home/Home.jsx"
 import { Departament } from "./pages/Departament/Departament.jsx"
 import { Tenant } from "./pages/Tenant/Tenant.jsx"
 import { Link } from "./router/Link/Link.jsx"
-import styles from "./css/App.module.css"
+import { Route } from "./router/Route.jsx"
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [session, setSession] = useState("")
-  const [page, setPage] = useState(<></>)
   const [statusCode, setStatusCode] = useState(0)
   const [links, setLinks] = useState(<></>)
-
-  console.log(statusCode)
 
   useEffect(() => {
     fetch("http://localhost/inmobiliaria/backend/auth/Session.php", { credentials: "include" })
@@ -22,34 +19,35 @@ function App() {
         setStatusCode(res.status)
         if (statusCode == 200) {
           setLinks(<><Link href={"/Tenant"} text={"Inquilinos"}></Link>
-                <Link href={"/Departament"} text={"Departamentos"}></Link></>)
+          <Link href={"/Departament"} text={"Departamentos"}></Link></>)
         }
         else {
           setLinks(<></>)
         }
-        if (currentPath.includes("/Login")) { 
-          setPage(<Login setCurrentPath={setCurrentPath} setSession={setSession}></Login>)
-        }
-        else if (currentPath.includes("/Home") && statusCode == 200) {
-          setPage(<Home></Home>)
-        }
-        else if (currentPath.includes("/Departament") && statusCode == 200) {
-          setPage(<Departament></Departament>)
-        }
-        else if (currentPath.includes("/Tenant") && statusCode == 200) {
-          setPage(<Tenant></Tenant>)
-        }
-        else {
-          setPage(<Login setCurrentPath={setCurrentPath} setSession={setSession}></Login>)
-        }
       })
-  }, [statusCode, window.location.pathname])
+  }, [statusCode, currentPath])
+
+  useEffect(() => {
+    function handlePathChange () {
+      setCurrentPath(window.location.pathname)
+    }
+
+    window.addEventListener("popstate", handlePathChange)
+
+    return () => {
+      window.removeEventListener("popstate", handlePathChange)
+    }
+  }, [])
 
   return (
-    <div className={styles.dashboard}>
-      <Header setCurrentPath={setCurrentPath} currentPath={currentPath} statusCode={statusCode} links={links}></Header>
-        {page}
-    </div>
+    <>
+      <Header setCurrentPath={setCurrentPath} currentPath={currentPath} statusCode={statusCode} links={links}>
+      </Header>
+        <Route path={"/Login"} component={Login} setCurrentPath={setCurrentPath} setSession={setSession}></Route>
+        <Route path={"/Home"} component={Home}></Route>
+        <Route path={"/Departament"} component={Departament}></Route>
+        <Route path={"/Tenant"} component={Tenant}></Route>
+    </>
   )
 }
 

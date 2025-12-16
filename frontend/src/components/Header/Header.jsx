@@ -21,10 +21,10 @@ export function Header ({setCurrentPath, currentPath, statusCode, links}) {
     }, [statusCode])
 
     return (
-        <header>
+        (currentPath.includes("/Login") ? <></> : <header>
             <h1>Inmobiliaria</h1>
             {logOut}
             {links}
-        </header>
+        </header>)
     )
 }
