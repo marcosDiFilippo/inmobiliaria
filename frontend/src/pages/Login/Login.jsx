@@ -1,7 +1,11 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 
-export function Login({setCurrentPath}) {
+export function Login({setCurrentPath, setSession}) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [alert, setAlert] = useState(<></>)
+    
     async function getData () {
         const data = await fetch("http://localhost/inmobiliaria/backend/controllers/LoginController.php", {
             method: "POST",
@@ -13,28 +17,32 @@ export function Login({setCurrentPath}) {
         const statusCode = await data.status
 
         if (statusCode === 404) {
-            setAlert(<div>
-                <p>No se ha podido encontrar al usuario,</p>
-                <p>Por favor vuelva ingresar.</p>
-            </div>)
+            setAlert(
+                <div>
+                    <p>No se ha podido encontrar al usuario,</p>
+                    <p>Por favor vuelva ingresar.</p>
+                </div>
+            )
         }
         else {
-            setAlert(<div>
-                <p>Sesion iniciada con exito</p>
-            </div>)
+            setAlert(
+                <div>
+                    <p>Sesion iniciada con exito</p>
+                </div>
+            )
 
             const dataSession = await fetch("http://localhost/inmobiliaria/backend/auth/Session.php", {
                 method: "GET",
                 headers: {"Content-Type": "application/x-www-form-urlencoded"},
                 credentials: "include"
             })
+            const jsonSession = await dataSession.json();
+            
+            setSession(jsonSession)
+            window.history.pushState({}, "", "/Home")
             setCurrentPath("/Home")
         }
     }
-    
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [alert, setAlert] = useState(<></>)
 
     const handleSubmit = (e) => {
         e.preventDefault();
