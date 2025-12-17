@@ -18,7 +18,7 @@ export function Login({setCurrentPath, setSession}) {
 
         if (statusCode === 404) {
             setAlert(
-                <div>
+                <div className={styles.alert}>
                     <p>No se ha podido encontrar al usuario,</p>
                     <p>Por favor vuelva ingresar.</p>
                 </div>
