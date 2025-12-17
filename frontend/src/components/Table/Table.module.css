@@ -31,3 +31,9 @@ tbody tr:hover {
 tbody tr:nth-child(even) {
     background-color: #fafafa;
 }
+
+.td_actions {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+}

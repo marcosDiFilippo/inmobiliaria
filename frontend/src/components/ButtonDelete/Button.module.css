@@ -1,0 +1,38 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 12px;
+    border-radius: 6px;
+
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    transition: background-color 0.2s ease, 
+    color 0.2s ease, 
+    border-color 0.2s ease;
+}
+
+.delete {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+.delete:hover {
+    background-color: #fecaca;
+}
+
+.button svg {
+    width: 16px;
+    height: 16px;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

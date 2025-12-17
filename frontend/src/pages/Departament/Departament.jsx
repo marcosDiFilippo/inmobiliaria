@@ -1,4 +1,5 @@
 import { Table } from "../../components/Table/Table";
+import { useDepartament } from "../../hooks/useDepartament.jsx";
 
 export function Departament () {
     const thList = [{
@@ -30,12 +31,13 @@ export function Departament () {
         field: "Estado"
     },
 ]
+    const { getDataDepartament } = useDepartament();
 
     return (
         <>
             <h2>Departamentos</h2>
 
-            <Table thList={thList}></Table>
+            <Table thList={thList} getData={getDataDepartament}></Table>
         </>
     )
 }
