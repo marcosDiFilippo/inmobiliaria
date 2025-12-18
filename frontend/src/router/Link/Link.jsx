@@ -1,11 +1,14 @@
+
+import { useLinks } from "../../hooks/useLinks";
 import styles from "./Link.module.css";
 
 export function Link({ href, text }) {
+    const { navigateTo } = useLinks()
+
     function handleClick (e) {
         e.preventDefault()
 
-        window.history.pushState({}, "", href)
-        window.dispatchEvent(new PopStateEvent("popstate"))
+        navigateTo(href)
     }
 
     return (

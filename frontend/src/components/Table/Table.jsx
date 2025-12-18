@@ -13,7 +13,6 @@ export function Table ({thList, getData}) {
             .then(result => setDataTable(result))
     }, [])
 
-    console.log(dataTable)
     return (
         <table>
             <thead>

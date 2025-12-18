@@ -12,25 +12,25 @@ import { useSession } from "./hooks/useSession.jsx"
 function App() {
   const { currentPath, setCurrentPath } = useCurrentPath()
   const { session, setSession } = useSession()
-  const { links, statusCode, verificateStatusCode, changePath } = useLinks()
+  const { links, statusCode, changePath, verificateStatusCode, navigateTo } = useLinks()
 
-  console.log("c" + currentPath)
+  window.currentPath = currentPath
 
   useEffect(() => {
     verificateStatusCode()
   }, [statusCode, currentPath])
 
   useEffect(() => {
-    changePath()
-  }, [currentPath])
+    changePath(setCurrentPath)
+  }, [])
 
   return (
     <>
-      <Header setCurrentPath={setCurrentPath} currentPath={currentPath} statusCode={statusCode} links={links}></Header>
-        <Route path={"/Login"} component={Login} setCurrentPath={setCurrentPath} setSession={setSession}></Route>
-        <Route path={"/Home"} component={Home}></Route>
-        <Route path={"/Departament"} component={Departament}></Route>
-        <Route path={"/Tenant"} component={Tenant}></Route>
+      <Header setCurrentPath={setCurrentPath} currentPath={currentPath} statusCode={statusCode} links={links} navigateTo={navigateTo}></Header>
+        <Route path={"/Login"} component={Login} navigateTo={navigateTo} currentPath={currentPath} setCurrentPath={setCurrentPath} setSession={setSession}></Route>
+        <Route path={"/Home"} currentPath={currentPath} component={Home}></Route>
+        <Route path={"/Departament"} currentPath={currentPath} component={Departament}></Route>
+        <Route path={"/Tenant"} currentPath={currentPath} component={Tenant}></Route>
     </>
   )
 }

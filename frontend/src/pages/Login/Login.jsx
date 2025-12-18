@@ -1,12 +1,14 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 
-export function Login({setCurrentPath, setSession}) {
+export function Login({setSession, navigateTo}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState(<></>)
     
-    async function getData () {
+    async function getData (event) {
+        event.preventDefault()
+
         const data = await fetch("http://localhost/inmobiliaria/backend/controllers/LoginController.php", {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
@@ -23,37 +25,32 @@ export function Login({setCurrentPath, setSession}) {
                     <p>Por favor vuelva ingresar.</p>
                 </div>
             )
+            path = "/Login"
+            setEmail("")
+            setPassword("")
+            return
         }
-        else {
-            setAlert(
-                <div>
-                    <p>Sesion iniciada con exito</p>
-                </div>
-            )
+        setAlert(
+            <div>
+                <p>Sesion iniciada con exito</p>
+            </div>
+        )
 
-            const dataSession = await fetch("http://localhost/inmobiliaria/backend/auth/Session.php", {
-                method: "GET",
-                headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                credentials: "include"
-            })
-            const jsonSession = await dataSession.json();
-            
-            setSession(jsonSession)
-            window.history.pushState({}, "", "/Home")
-            setCurrentPath("/Home")
-        }
+        const dataSession = await fetch("http://localhost/inmobiliaria/backend/auth/Session.php", {
+            method: "GET",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            credentials: "include"
+        })
+        const jsonSession = await dataSession.json();
+        
+        setSession(jsonSession)
+        navigateTo("/Home")
     }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        getData()
-    };
 
     return (
         <div className={styles.container}>
             {alert}
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={getData}>
                 <h2 className={styles.title}>Iniciar sesión</h2>
                 <div className={styles.field}>
                     <label className={styles.label}>Email</label>

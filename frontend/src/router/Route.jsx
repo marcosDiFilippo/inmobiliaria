@@ -1,6 +1,4 @@
-export function Route ({ path, component: Component, ...props }) {
-    const currentPath = window.location.pathname.replace(/\/$/, "")
-
+export function Route ({ path, currentPath ,component: Component, ...props }) {
     if (path === currentPath) { 
         return <Component {...props}></Component>
     }

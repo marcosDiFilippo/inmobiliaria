@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 
-export function Header ({setCurrentPath, currentPath, statusCode, links}) {
+export function Header ({currentPath, statusCode, links, navigateTo}) {
     const [logOut, setLogOut] = useState(<></>)
 
     function handleClick () {
         fetch("http://localhost/inmobiliaria/backend/auth/DestroySession.php", {credentials: "include"})
-        setCurrentPath("/Login")
-        window.history.pushState({}, "", "/Login")
+        navigateTo("/Login")
         setLogOut(<></>)
     }
 
@@ -16,7 +15,7 @@ export function Header ({setCurrentPath, currentPath, statusCode, links}) {
         }
         else if (statusCode == 401) {
             setLogOut(<></>)
-            window.history.pushState({}, "", "/Login")
+            navigateTo("/Login")
         }
     }, [statusCode])
 
