@@ -17,8 +17,6 @@
             $this->email = $email;
             $this->password = md5($password);
         }
-
-        // Getters
         public function getId(): int
         {
             return $this->id;
@@ -33,8 +31,6 @@
         {
             return $this->email;
         }
-
-        // Setters
         public function setName(string $name): void
         {
             $this->name = $name;
@@ -47,7 +43,7 @@
 
         public function setPassword(string $password): void
         {
-            $this->password = password_hash($password, PASSWORD_DEFAULT);
+            $this->password = md5($password);
         }
         public function getPassword(): string
         {

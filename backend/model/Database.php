@@ -1,4 +1,5 @@
 <?php
+    include_once("../cors.php");
     class Database {
         private static ? PDO $connection = null;
         public static function getConnection(): PDO {

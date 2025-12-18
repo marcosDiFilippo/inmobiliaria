@@ -7,44 +7,70 @@ import { useDepartament } from "../../hooks/useDepartament.jsx";
 import { OPTIONS_PROPERTY_STATE, OPTIONS_PROPERTY_TYPE } from "../../constants/propertyOptions.jsx"
 
 export function Departament () {
+    const thList = [
+        {
+            id: 1,
+            field: "Ubicacion"
+        },
+        {
+            id: 2,
+            field: "Fecha De Creacion"
+        },
+        {
+            id: 3,
+            field: "Precio Venta"
+        },
+        {
+            id: 4,
+            field: "Precio Alquiler"
+        },
+        {
+            id: 5,
+            field: "Descripcion"
+        },
+        {
+            id: 6,
+            field: "Tipo Inmueble"
+        },
+        {
+            id: 7,
+            field: "Estado"
+        },
+    ]
+
+    const { getDataDepartament } = useDepartament();
+
     function handleSubmit(event) {
         event.preventDefault()  
         const form = new FormData(event.target);
-        
-        console.log("form: " + form.get("name_street"))
+
+        const dataDepartament = {
+            name_street: form.get("name_street"),
+            number_street: Number(form.get("number_street")),
+            number_dpto: Number(form.get("number_dpto")),
+            rental_price:  Number(form.get("rental_price")),
+            sale_price: Number(form.get("sale_price")),
+            property_type: form.get("property_type"),
+            property_state: form.get("property_state"),
+            description: form.get("description"),
+        };
+
+        fetchInsertDepartament(dataDepartament)
     }
+    
+    async function fetchInsertDepartament(dataDepartament) {
+        let response = await fetch("http://localhost/inmobiliaria/backend/controllers/DepartamentController.php",
+            {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(dataDepartament)
+            }
+        )
 
-    const thList = [{
-        id: 1,
-        field: "Ubicacion"
-    },
-    {
-        id: 2,
-        field: "Fecha De Creacion"
-    },
-    {
-        id: 3,
-        field: "Precio Venta"
-    },
-    {
-        id: 4,
-        field: "Precio Alquiler"
-    },
-    {
-        id: 5,
-        field: "Descripcion"
-    },
-    {
-        id: 6,
-        field: "Tipo Inmueble"
-    },
-    {
-        id: 7,
-        field: "Estado"
-    },
-]
+        let text = await response.text()
 
-    const { getDataDepartament } = useDepartament();
+        console.log(text)
+    }
 
     return (
         <>

@@ -1,9 +1,5 @@
 <?php 
-    header("Access-Control-Allow-Origin: http://localhost:5173");
-    header("Access-Control-Allow-Credentials: true");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
-
+    include_once("../cors.php");
     include_once '../validations/EmptyValidation.php';
     include_once '../validations/EmailValidation.php';
     include_once '../auth/Login.php';
