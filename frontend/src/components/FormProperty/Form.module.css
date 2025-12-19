@@ -1,0 +1,22 @@
+.line {
+    background-color: black;
+    width: 1px;
+    height: 650px;
+    margin-right: 8px;
+}
+
+form {
+    display: flex;
+}
+
+.div_categories {
+    display: flex;
+    column-gap: 1rem;
+}
+
+.div_ambients {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
