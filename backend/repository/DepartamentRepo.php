@@ -26,15 +26,9 @@
 
             echo json_encode($result);
         }
-        public function saveToDatabase($data){
+        public function saveToDatabase($data, $ambients){
             $connection = Database::getConnection();
 
-
-
-            echo "ACAAAA";
-            foreach ($data["ambients"] as $key => $value) {
-                echo $value;
-            }
             try {
                 $stmtLocacion = $connection->prepare("
                     INSERT INTO locacion (calle, numero_calle, numero_dpto)
@@ -68,7 +62,6 @@
                         NOW()
                     )
                 ");
-
                 
                 $stmtInmueble->execute([
                     ":description"     => $data["description"],
@@ -78,21 +71,34 @@
                     ":property_type"   => $data["property_type"],
                     ":property_state"  => $data["property_state"]
                 ]);
-
-                
-                /*
                 $fk_inmueble = $connection->lastInsertId();
 
-                $stmtAmbiente = $connection->prepare("INSERT INTO 
-                `inmueble_ambiente`
-                (`fk_inmueble`, `fk_ambientes`, `cantidad_ambientes`) 
-                VALUES 
-                ('[value-1]','[value-2]','[value-3]')");
-                */
+                foreach ($ambients as $ambient) {
+                    $idAmbient = $ambient["id"];
+                    $amount = $ambient["amount"];
+
+                    $stmtAmbient = $connection->prepare("
+                        INSERT INTO inmueble_ambiente (
+                            fk_inmueble, 
+                            fk_ambientes, 
+                            cantidad_ambientes
+                        ) VALUES (
+                            :fk_inmueble,
+                            :fk_ambientes,
+                            :cantidad_ambientes
+                        )
+                    ");
+
+                    $stmtAmbient->execute([
+                        ":fk_inmueble" => $fk_inmueble,
+                        ":fk_ambientes" => $idAmbient,
+                        ":cantidad_ambientes" => $amount
+                    ]);
+                }
                 
                 echo json_encode([
                     "success" => true,
-                    "id_inmueble" => $connection->lastInsertId()
+                    "id_inmueble" => $fk_inmueble
                 ]);
                 
             } catch (PDOException $e) {

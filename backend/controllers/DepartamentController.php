@@ -10,23 +10,28 @@
             $this->departamentRepo = $departamentRepo;
         }
         public function receiveJson () {
+            if ($this->methodController->isMethodPost() == false) {
+                return;
+            }
             try {
-                $bodyRequest = file_get_contents("php://input");
+                $this->emptyValidation->isEmpty($this->requestData["name_street"]);
+                $this->emptyValidation->isEmpty($this->requestData["number_street"]);
+                $this->emptyValidation->isEmpty($this->requestData["number_dpto"]);
+                $this->emptyValidation->isEmpty($this->requestData["rental_price"]);
+                $this->emptyValidation->isEmpty($this->requestData["sale_price"]);
+                $this->emptyValidation->isEmpty($this->requestData["property_type"]);
+                $this->emptyValidation->isEmpty($this->requestData["property_state"]);
+                $this->emptyValidation->isEmpty($this->requestData["description"]);
+                
+                $ambients = $this->requestData["ambients"];
 
-                $data = json_decode($bodyRequest, true);
-
-                foreach($data as $key => $element) {
-                    $this->getEmptyValidation()->isEmpty($element);
-                }
-
-                $this->departamentRepo->saveToDatabase($data);
+                $this->departamentRepo->saveToDatabase($this->requestData, $ambients);
             }
             catch (Exception $e) {
                 echo json_encode($e->getMessage());
             }
         }
     }
-    $deapartamentRepo = new DepartamentRepo();
     $deapartamentController = new DepartamentController($deapartamentRepo);
     $deapartamentController->receiveJson();
 ?>
