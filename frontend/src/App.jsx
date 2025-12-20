@@ -14,8 +14,6 @@ function App() {
   const { session, setSession } = useSession()
   const { links, statusCode, changePath, verificateStatusCode, navigateTo } = useLinks()
 
-  window.currentPath = currentPath
-
   useEffect(() => {
     verificateStatusCode()
   }, [statusCode, currentPath])

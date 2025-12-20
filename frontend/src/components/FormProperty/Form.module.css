@@ -5,8 +5,12 @@
     margin-right: 8px;
 }
 
-form {
+.form_departament {
     display: flex;
+}
+
+.p_categories p {
+    font-size: 1.2rem;
 }
 
 .div_categories {
@@ -16,7 +20,10 @@ form {
 
 .div_ambients {
     width: 30%;
+}
+
+.div_ambients > div {
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+    row-gap: 10px;
 }

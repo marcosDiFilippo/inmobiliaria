@@ -27,9 +27,14 @@
             echo json_encode($result);
         }
         public function saveToDatabase($data){
-            echo "guarda";
             $connection = Database::getConnection();
 
+
+
+            echo "ACAAAA";
+            foreach ($data["ambients"] as $key => $value) {
+                echo $value;
+            }
             try {
                 $stmtLocacion = $connection->prepare("
                     INSERT INTO locacion (calle, numero_calle, numero_dpto)
@@ -64,6 +69,7 @@
                     )
                 ");
 
+                
                 $stmtInmueble->execute([
                     ":description"     => $data["description"],
                     ":sale_price" => $data["sale_price"],
@@ -72,12 +78,23 @@
                     ":property_type"   => $data["property_type"],
                     ":property_state"  => $data["property_state"]
                 ]);
+
+                
+                /*
+                $fk_inmueble = $connection->lastInsertId();
+
+                $stmtAmbiente = $connection->prepare("INSERT INTO 
+                `inmueble_ambiente`
+                (`fk_inmueble`, `fk_ambientes`, `cantidad_ambientes`) 
+                VALUES 
+                ('[value-1]','[value-2]','[value-3]')");
+                */
                 
                 echo json_encode([
                     "success" => true,
                     "id_inmueble" => $connection->lastInsertId()
                 ]);
-
+                
             } catch (PDOException $e) {
                 http_response_code(500);
                 echo json_encode([

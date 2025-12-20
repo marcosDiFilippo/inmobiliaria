@@ -10,13 +10,9 @@
             $this->departamentRepo = $departamentRepo;
         }
         public function receiveJson () {
-            if (self::getMethodController()->isMethodPost() == false) {
-                echo json_encode("Ha ocurrido un error");
-                return;
-            }
             try {
                 $bodyRequest = file_get_contents("php://input");
-            
+
                 $data = json_decode($bodyRequest, true);
 
                 foreach($data as $key => $element) {

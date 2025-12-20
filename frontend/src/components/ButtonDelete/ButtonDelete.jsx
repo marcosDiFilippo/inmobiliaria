@@ -1,13 +1,9 @@
 import styles from "./Button.module.css"
 
-export function ButtonDelete () {
-    function handleClick () {
-
-    }
-
+export function ButtonDelete ({handleClickDelete}) {
     return (
         <button 
-            onClick={handleClick}
+            onClick={handleClickDelete}
             className={`${styles.button} ${styles.delete}`}
         >
             <svg

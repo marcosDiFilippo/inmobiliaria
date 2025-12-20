@@ -5,12 +5,10 @@ export function useLinks () {
     const [statusCode, setStatusCode] = useState(0)
     const [links, setLinks] = useState(<></>)
 
-
     function verificateStatusCode () {
         fetch("http://localhost/inmobiliaria/backend/auth/Session.php", { credentials: "include" })
             .then(res => {
             setStatusCode(res.status)
-            console.log("status en useLinks: " + statusCode)
             if (statusCode == 200) {
                 setLinks(<><Link href={"/Tenant"} text={"Inquilinos"}></Link>
                 <Link href={"/Departament"} text={"Departamentos"}></Link></>)

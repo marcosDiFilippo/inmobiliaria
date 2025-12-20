@@ -12,6 +12,18 @@ export function Table ({thList, getData}) {
         data
             .then(result => setDataTable(result))
     }, [])
+    
+    function handleClickEdit (event) {
+        event.preventDefault()
+    }
+
+    function handleClickDelete (event) {
+        event.preventDefault()
+    }
+
+    function handleClick (event) {
+        event.preventDefault()
+    }
 
     return (
         <table>
@@ -27,13 +39,15 @@ export function Table ({thList, getData}) {
                     <tr key={tdElement.id_inmueble}>
                         <td>{tdElement.calle + " " + tdElement.numero_dpto}</td>
                         <td>{tdElement.fecha_creacion}</td>
-                        <td>{tdElement.precio_venta}</td>
-                        <td>{tdElement.precio_alquiler}</td>
-                        <td>{tdElement.descripcion}</td>
+                        <td>$ {tdElement.precio_venta}</td>
+                        <td>$ {tdElement.precio_alquiler}</td>
                         <td>{tdElement.tipo}</td>
                         <td className={styles.td_actions}>
-                            <ButtonEdit></ButtonEdit>
-                            <ButtonDelete></ButtonDelete>
+                            <ButtonEdit handleClickEdit={handleClickEdit}></ButtonEdit>
+                            <ButtonDelete handleClickDelete={handleClickDelete}></ButtonDelete>
+                        </td>
+                        <td>
+                            <button onClick={handleClick}>Ver Detalles</button>
                         </td>
                     </tr>
                 ))}

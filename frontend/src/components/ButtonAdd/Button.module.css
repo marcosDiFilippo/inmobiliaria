@@ -1,0 +1,29 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 1rem;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    color: #15803d;
+    background-color: #16a34a73;
+
+    border: none;
+    border-radius: 6px;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover {
+    background-color: #15803d;
+    color: #ffffff;
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+}
