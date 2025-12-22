@@ -1,0 +1,60 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 1.2rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+.ambients {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.ambient {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+}

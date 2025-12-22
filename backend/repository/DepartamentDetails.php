@@ -47,8 +47,11 @@
 
             $dataAmbients = $stmtAmbients->fetchAll();
 
-            echo json_encode($dataProperty);
-            echo json_encode($dataAmbients);
+            $response = [
+                "dataProperty" => $dataProperty,
+                "dataAmbients" => $dataAmbients
+            ];
+            echo json_encode($response);        
         }
     }
     $departamentDetails = new DepartamentDetails();

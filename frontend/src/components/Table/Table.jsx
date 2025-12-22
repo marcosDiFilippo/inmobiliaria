@@ -3,8 +3,9 @@ import styles from "./Table.module.css"
 import { ButtonEdit } from "../ButtonEdit/ButtonEdit.jsx"
 import { ButtonDelete } from "../ButtonDelete/ButtonDelete.jsx"
 import { ButtonDetails } from "../ButtonDetails/ButtonDetails.jsx"
+import { Link } from "../../router/Link/Link.jsx"
 
-export function Table ({thList, getData}) {
+export function Table ({thList, getData, navigateTo}) {
     const [dataTable, setDataTable] = useState([])
 
     const data = getData()
@@ -24,24 +25,8 @@ export function Table ({thList, getData}) {
     
     function handleClickDetails (event) {
         const id_inmueble = Number(event.target.dataset.id)
-
-        getDepartamentDetails(id_inmueble)
-    }
-
-    async function getDepartamentDetails(id_inmueble) {
-        const response = await fetch("http://localhost/inmobiliaria/backend/repository/DepartamentDetails.php", 
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: "idInmueble=" + id_inmueble
-            }
-        )
-
-        const result = await response.text()
-
-        console.log(result)
+        
+        navigateTo("/DepartamentDetails?idInmueble=" + id_inmueble);
     }
 
     function handleClick (event) {

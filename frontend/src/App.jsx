@@ -8,6 +8,7 @@ import { Route } from "./router/Route.jsx"
 import { useCurrentPath } from "./hooks/useCurrentPath.jsx"
 import { useLinks } from "./hooks/useLinks.jsx"
 import { useSession } from "./hooks/useSession.jsx"
+import { DepartamentDetails } from "./pages/DepartamentDetails/DepartamentDetails.jsx"
 
 function App() {
   const { currentPath, setCurrentPath } = useCurrentPath()
@@ -27,8 +28,9 @@ function App() {
       <Header setCurrentPath={setCurrentPath} currentPath={currentPath} statusCode={statusCode} links={links} navigateTo={navigateTo}></Header>
         <Route path={"/Login"} component={Login} navigateTo={navigateTo} currentPath={currentPath} setCurrentPath={setCurrentPath} setSession={setSession}></Route>
         <Route path={"/Home"} currentPath={currentPath} component={Home}></Route>
-        <Route path={"/Departament"} currentPath={currentPath} component={Departament}></Route>
+        <Route path={"/Departament"} currentPath={currentPath} component={Departament} navigateTo={navigateTo}></Route>
         <Route path={"/Tenant"} currentPath={currentPath} component={Tenant}></Route>
+        <Route path={"/DepartamentDetails"} currentPath={currentPath} component={DepartamentDetails}></Route>
     </>
   )
 }
