@@ -24,7 +24,7 @@
                 $this->emptyValidation->isEmpty($this->requestData["description"]);
                 
                 $ambients = $this->requestData["ambients"];
-
+                
                 $this->departamentRepo->saveToDatabase($this->requestData, $ambients);
             }
             catch (Exception $e) {

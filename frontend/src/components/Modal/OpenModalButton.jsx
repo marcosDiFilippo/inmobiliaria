@@ -56,7 +56,6 @@ export function OpenModalButton() {
         )
 
         let text = await response.text()
-        console.log(text)
     }
     function handleClick () {
         setOpen(true)
