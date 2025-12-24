@@ -2,8 +2,11 @@ import { Table } from "../../components/Table/Table";
 import { useDepartament } from "../../hooks/useDepartament.jsx";
 import { OpenModalButton } from "../../components/Modal/OpenModalButton.jsx";
 import { Carousel } from "../../components/Carousel/Carousel.jsx";
+import { useState } from "react";
 
 export function Departament ({navigateTo}) {
+    const [alert, setAlert] = useState(<></>)   
+
     const thList = [
         {
             id: 1,
@@ -44,8 +47,9 @@ export function Departament ({navigateTo}) {
 
             <OpenModalButton></OpenModalButton>
 
-            <Table thList={thList} getData={getDataDepartament} navigateTo={navigateTo}></Table>
-            <Carousel></Carousel>
+            {alert}
+            <Table thList={thList} getData={getDataDepartament} navigateTo={navigateTo} setAlert={setAlert}></Table>
+            {/*<Carousel></Carousel>*/}
         </>
     )
 }

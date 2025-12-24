@@ -1,5 +1,4 @@
 <?php
-    include_once("../cors.php");
     include_once("Repository.php");
     include_once("../model/Database.php");
     class DepartamentRepo extends Repository {
@@ -24,7 +23,7 @@
             
             $result = $stmt->fetchAll();
 
-            echo json_encode($result);
+            return $result;
         }
         public function saveToDatabase($data, $ambients){
             $connection = Database::getConnection();
@@ -109,7 +108,78 @@
                 ]);
             }
         }
+        public function deleteFromDatabase(int $idProperty) {
+            $connection = Database::getConnection();
+
+            try {
+                $connection->beginTransaction();
+
+                // 1️⃣ Obtener la locacion asociada
+
+                $stmtGetLocacion = $connection->prepare("
+                    SELECT fk_locacion 
+                    FROM inmueble 
+                    WHERE id_inmueble = :id
+                ");
+                $stmtGetLocacion->execute([
+                    ":id" => $idProperty
+                ]);
+
+                $locacion = $stmtGetLocacion->fetch(PDO::FETCH_ASSOC);
+
+                if (!$locacion) {
+                    $connection->rollBack();
+                    http_response_code(404);
+                    echo json_encode([
+                        "error" => "Inmueble no encontrado"
+                    ]);
+                    return;
+                }
+
+                $idLocacion = $locacion["fk_locacion"];
+
+                // 2️⃣ Borrar relaciones con ambientes
+                $stmtDeleteAmbients = $connection->prepare("
+                    DELETE FROM inmueble_ambiente 
+                    WHERE fk_inmueble = :id
+                ");
+                $stmtDeleteAmbients->execute([
+                    ":id" => $idProperty
+                ]);
+
+                // 3️⃣ Borrar inmueble
+                $stmtDeleteInmueble = $connection->prepare("
+                    DELETE FROM inmueble 
+                    WHERE id_inmueble = :id
+                ");
+                $stmtDeleteInmueble->execute([
+                    ":id" => $idProperty
+                ]);
+
+                // 4️⃣ Borrar locacion
+                $stmtDeleteLocacion = $connection->prepare("
+                    DELETE FROM locacion 
+                    WHERE id_locacion = :id
+                ");
+                $stmtDeleteLocacion->execute([
+                    ":id" => $idLocacion
+                ]);
+
+                $connection->commit();
+
+                echo json_encode([
+                    "success" => true
+                ]);
+
+            } catch (PDOException $e) {
+                $connection->rollBack();
+                http_response_code(500);
+                echo json_encode([
+                    "error" => "Error al eliminar",
+                    "detail" => $e->getMessage()
+                ]);
+            }
+        }
+
     }
-    $deapartamentRepo = new DepartamentRepo();
-    $deapartamentRepo->getData();
 ?>

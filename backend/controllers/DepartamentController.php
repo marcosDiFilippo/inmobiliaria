@@ -1,13 +1,13 @@
 <?php
-    include_once("../cors.php");
-    include_once("./Controller.php");
+    require_once("../cors.php");
     include_once("../repository/DepartamentRepo.php");
+    include_once("./Controller.php");
     class DepartamentController extends Controller {
         private DepartamentRepo $departamentRepo;
-        public function __construct(DepartamentRepo $departamentRepo)
+        public function __construct()
         {
             parent::__construct();
-            $this->departamentRepo = $departamentRepo;
+            $this->departamentRepo = new DepartamentRepo();
         }
         public function receiveJson () {
             if ($this->methodController->isMethodPost() == false) {
@@ -31,7 +31,31 @@
                 echo json_encode($e->getMessage());
             }
         }
+        public function deleteDepartament () {
+            if (!isset($this->requestData["idInmueble"])) {
+                http_response_code(400);
+                echo json_encode(["error" => "idInmueble faltante"]);
+                return;
+            }
+
+            $idProperty = (int) $this->requestData["idInmueble"];
+            $this->departamentRepo->deleteFromDatabase($idProperty);
+        }
+        public function getDepartamentRepo () {
+            return $this->departamentRepo;
+        }
     }
-    $deapartamentController = new DepartamentController($deapartamentRepo);
-    $deapartamentController->receiveJson();
+    $deapartamentController = new DepartamentController();
+    
+    switch ($_SERVER["REQUEST_METHOD"]) {
+        case "GET":
+            echo json_encode($deapartamentController->getDepartamentRepo()->getData());
+            break;
+        case "POST":
+            $deapartamentController->receiveJson();
+            break;
+        case "DELETE":
+            $deapartamentController->deleteDepartament();
+            break;
+    }
 ?>

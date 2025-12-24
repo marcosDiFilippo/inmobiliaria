@@ -1,7 +1,7 @@
 export function useDepartament () {
     async function getDataDepartament() {
-        const data = await fetch("http://localhost/inmobiliaria/backend/repository/DepartamentRepo.php", {
-            method: "GET",      
+        const data = await fetch("http://localhost/inmobiliaria/backend/controllers/DepartamentController.php", {
+            method: "GET"      
         })
 
         const json = await data.json()

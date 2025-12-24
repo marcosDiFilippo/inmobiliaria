@@ -3,10 +3,10 @@ import styles from "./Table.module.css"
 import { ButtonEdit } from "../ButtonEdit/ButtonEdit.jsx"
 import { ButtonDelete } from "../ButtonDelete/ButtonDelete.jsx"
 import { ButtonDetails } from "../ButtonDetails/ButtonDetails.jsx"
-import { useFetch } from "../../hooks/useFetch.jsx"
+import { AlertError } from "../AlertError/AlertError.jsx"
 
-export function Table ({thList, getData, navigateTo}) {
-    const [dataTable, setDataTable] = useState([])
+export function Table ({thList, getData, navigateTo, setAlert}) {
+    const [ dataTable, setDataTable] = useState([])
     const [dataDelete, setDataDelete] = useState("")
     
     useEffect(() => {
@@ -14,7 +14,7 @@ export function Table ({thList, getData, navigateTo}) {
         
         data
             .then(result => setDataTable(result))
-    }, [])
+    }, [dataDelete])
     
     function handleClickEdit (event) {
         event.preventDefault()
@@ -22,9 +22,13 @@ export function Table ({thList, getData, navigateTo}) {
 
     function handleClickDelete (event) {
         event.preventDefault()
-        const id_inmueble = Number(event.target.dataset.id)
+        const id_inmueble = Number(event.currentTarget.dataset.id)
 
-        fetch("http://localhost/inmobiliaria/backend/model/DepartamentService.php", {
+        if (!id_inmueble) {
+            return; 
+        }
+
+        fetch("http://localhost/inmobiliaria/backend/controllers/DepartamentController.php", {
             method: "DELETE",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({
@@ -32,12 +36,20 @@ export function Table ({thList, getData, navigateTo}) {
             })
         })
         .then((response) => response.json())
-        .then(newData => setDataDelete(newData))
+        .then(newData => {
+            setDataDelete(newData)
+        })
         .catch(error => error)
     }
+    
+    useEffect(() => {
+        if (dataDelete.success == true) {
+            setAlert(<AlertError message={"Se ha eliminado correctamente el inmueble"}></AlertError>)
+        }
+    }, [dataDelete])
 
     console.log(dataDelete)
-    
+
     function handleClickDetails (event) {
         event.preventDefault()
         const id_inmueble = Number(event.target.dataset.id)
