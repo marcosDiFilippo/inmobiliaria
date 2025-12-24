@@ -1,6 +1,7 @@
 import { Table } from "../../components/Table/Table";
 import { useDepartament } from "../../hooks/useDepartament.jsx";
 import { OpenModalButton } from "../../components/Modal/OpenModalButton.jsx";
+import { Carousel } from "../../components/Carousel/Carousel.jsx";
 
 export function Departament ({navigateTo}) {
     const thList = [
@@ -26,7 +27,7 @@ export function Departament ({navigateTo}) {
         },
         {
             id: 6,
-            field: "Estado"
+            field: "Acciones"
         },
         {
             id: 7,
@@ -44,6 +45,7 @@ export function Departament ({navigateTo}) {
             <OpenModalButton></OpenModalButton>
 
             <Table thList={thList} getData={getDataDepartament} navigateTo={navigateTo}></Table>
+            <Carousel></Carousel>
         </>
     )
 }

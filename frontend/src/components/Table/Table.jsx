@@ -3,14 +3,15 @@ import styles from "./Table.module.css"
 import { ButtonEdit } from "../ButtonEdit/ButtonEdit.jsx"
 import { ButtonDelete } from "../ButtonDelete/ButtonDelete.jsx"
 import { ButtonDetails } from "../ButtonDetails/ButtonDetails.jsx"
-import { Link } from "../../router/Link/Link.jsx"
+import { useFetch } from "../../hooks/useFetch.jsx"
 
 export function Table ({thList, getData, navigateTo}) {
     const [dataTable, setDataTable] = useState([])
-
-    const data = getData()
+    const [dataDelete, setDataDelete] = useState("")
     
     useEffect(() => {
+        const data = getData()
+        
         data
             .then(result => setDataTable(result))
     }, [])
@@ -21,24 +22,34 @@ export function Table ({thList, getData, navigateTo}) {
 
     function handleClickDelete (event) {
         event.preventDefault()
+        const id_inmueble = Number(event.target.dataset.id)
+
+        fetch("http://localhost/inmobiliaria/backend/model/DepartamentService.php", {
+            method: "DELETE",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({
+                idInmueble: id_inmueble
+            })
+        })
+        .then((response) => response.json())
+        .then(newData => setDataDelete(newData))
+        .catch(error => error)
     }
+
+    console.log(dataDelete)
     
     function handleClickDetails (event) {
+        event.preventDefault()
         const id_inmueble = Number(event.target.dataset.id)
         
         navigateTo("/DepartamentDetails?idInmueble=" + id_inmueble);
     }
-
-    function handleClick (event) {
-        event.preventDefault()
-    }
-
     return (
         <table>
             <thead>
                 <tr>
                     {thList.map(thElement => (  
-                        <th key={thElement.id}>{thElement.field !== "Estado" ? thElement.field : "Acciones"}</th>
+                        <th key={thElement.id}>{thElement.field}</th>
                     ))}
                 </tr>
             </thead>
@@ -52,7 +63,7 @@ export function Table ({thList, getData, navigateTo}) {
                         <td>{tdElement.tipo}</td>
                         <td className={styles.td_actions}>
                             <ButtonEdit handleClickEdit={handleClickEdit}></ButtonEdit>
-                            <ButtonDelete handleClickDelete={handleClickDelete}></ButtonDelete>
+                            <ButtonDelete id={tdElement.id_inmueble} handleClickDelete={handleClickDelete}></ButtonDelete>
                         </td>
                         <td>
                             <ButtonDetails id={tdElement.id_inmueble} onClick={handleClickDetails}>Ver Detalles</ButtonDetails>

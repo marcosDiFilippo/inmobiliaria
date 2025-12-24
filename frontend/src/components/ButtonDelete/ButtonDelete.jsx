@@ -1,8 +1,9 @@
 import styles from "./Button.module.css"
 
-export function ButtonDelete ({handleClickDelete}) {
+export function ButtonDelete ({id, handleClickDelete}) {
     return (
         <button 
+            data-id={id}
             onClick={handleClickDelete}
             className={`${styles.button} ${styles.delete}`}
         >

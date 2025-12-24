@@ -9,13 +9,14 @@
     padding: 20px;
     margin-bottom: 20px;
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .title {
     font-size: 1.7rem;
     font-weight: 600;
     margin-bottom: 16px;
+    text-align: center;
 }
 
 .grid {
