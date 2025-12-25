@@ -6,7 +6,7 @@
         public function authenticateUser(string $email, string $password) {
             try {
                 $database = Database::getConnection();
-                $query = "SELECT * FROM `parte_intervinente` WHERE `email`='$email' AND `contrasenia`=MD5('$password') LIMIT 1";
+                $query = "SELECT * FROM `admin` WHERE `email`='$email' AND `contrasenia`=MD5('$password') LIMIT 1";
                 $result = $database->query($query);
                 
                 if ($result->rowCount() === 0) {

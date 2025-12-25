@@ -19,5 +19,8 @@
         public function getMethodController () {
             return $this->methodController;
         }
+        public function getRequestData () {
+            return $this->requestData;
+        }
     }
 ?>

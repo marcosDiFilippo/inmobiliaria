@@ -1,6 +1,5 @@
 <?php
     include_once("Repository.php");
-    include_once("../model/Database.php");
     class DepartamentRepo extends Repository {
         public function getData()
         {

@@ -1,0 +1,30 @@
+.form {
+    max-width: 700px;
+    margin: 0 auto;
+
+    background-color: #ffffff;
+    padding: 24px;
+
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 20px;
+}
+
+.full {
+    grid-column: span 2;
+}
+
+.actions {
+    margin-top: 24px;
+}

@@ -1,4 +1,4 @@
-import { Table } from "../../components/Table/Table";
+import { TableDepartament } from "../../components/Table/TableDepartament.jsx";
 import { useDepartament } from "../../hooks/useDepartament.jsx";
 import { OpenModalButton } from "../../components/Modal/OpenModalButton.jsx";
 import { Carousel } from "../../components/Carousel/Carousel.jsx";
@@ -48,7 +48,7 @@ export function Departament ({navigateTo}) {
             <OpenModalButton></OpenModalButton>
 
             {alert}
-            <Table thList={thList} getData={getDataDepartament} navigateTo={navigateTo} setAlert={setAlert}></Table>
+            <TableDepartament thList={thList} getData={getDataDepartament} navigateTo={navigateTo} setAlert={setAlert}></TableDepartament>
             {/*<Carousel></Carousel>*/}
         </>
     )

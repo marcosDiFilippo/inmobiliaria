@@ -5,8 +5,8 @@ import { ButtonDelete } from "../ButtonDelete/ButtonDelete.jsx"
 import { ButtonDetails } from "../ButtonDetails/ButtonDetails.jsx"
 import { AlertError } from "../AlertError/AlertError.jsx"
 
-export function Table ({thList, getData, navigateTo, setAlert}) {
-    const [ dataTable, setDataTable] = useState([])
+export function TableDepartament ({thList, getData, navigateTo, setAlert}) {
+    const [dataTable, setDataTable] = useState([])
     const [dataDelete, setDataDelete] = useState("")
     
     useEffect(() => {
