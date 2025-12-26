@@ -3,10 +3,12 @@
     include_once("../repository/UserRepo.php");
     include_once("../validations/EmailValidation.php");
     include_once("../validations/NumberValidation.php");
+    include_once("../validations/UserValidation.php");
     class UserController extends Controller {
         private UserRepo $userRepo;
         private EmailValidation $emailValidation;
         private NumberValidation $numberValidation;
+        private UserValidation $userValidation;
 
         public function __construct()
         {
@@ -14,18 +16,21 @@
             $this->userRepo = new UserRepo();
             $this->emailValidation = new EmailValidation();
             $this->numberValidation = new NumberValidation();
+            $this->userValidation = new UserValidation();
         }
 
         public function getUserRepo () {
             return $this->userRepo;
         }
         public function validateUser () {
-            $first_name = htmlspecialchars($this->requestData["first_name"]);
-            $last_name = htmlspecialchars($this->requestData["last_name"]);
-            $phone = htmlspecialchars($this->requestData["phone"]);
-            $dni = htmlspecialchars($this->requestData["dni"]);
-            $email = htmlspecialchars($this->requestData["email"]);
-            $birth_date = htmlspecialchars($this->requestData["first_name"]);
+            $connection = Database::getConnection();
+
+            $first_name  = htmlspecialchars(trim($this->requestData["first_name"]));
+            $last_name   = htmlspecialchars(trim($this->requestData["last_name"]));
+            $phone       = (int) trim($this->requestData["phone"]);
+            $dni         = (int) trim($this->requestData["dni"]);
+            $email       = htmlspecialchars(strtolower(trim($this->requestData["email"])));
+            $birth_date  = htmlspecialchars(trim($this->requestData["birth_date"]));
 
             try {
                 $this->emptyValidation->isEmpty($first_name);
@@ -38,12 +43,12 @@
                 $this->numberValidation->isValidNumber($phone);
                 $this->numberValidation->isValidNumber($dni);
 
+                $this->userValidation->existsUser($connection, $email, $phone, $dni);
+                
                 $this->userRepo->insertToDatabase($this->requestData);
             } catch (Exception $e) {
                 echo json_encode($e->getMessage());
             }
-
-            echo json_encode("todo bien");
         }
     }
 
