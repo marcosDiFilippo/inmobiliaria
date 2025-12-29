@@ -9,6 +9,7 @@ import { useCurrentPath } from "./hooks/useCurrentPath.jsx"
 import { useLinks } from "./hooks/useLinks.jsx"
 import { useSession } from "./hooks/useSession.jsx"
 import { DepartamentDetails } from "./pages/DepartamentDetails/DepartamentDetails.jsx"
+import { Operation } from "./pages/Operation/Operation.jsx"
 
 function App() {
   const { currentPath, setCurrentPath } = useCurrentPath()
@@ -31,6 +32,7 @@ function App() {
         <Route path={"/Departament"} currentPath={currentPath} component={Departament} navigateTo={navigateTo}></Route>
         <Route path={"/Tenant"} currentPath={currentPath} component={Tenant}></Route>
         <Route path={"/DepartamentDetails"} currentPath={currentPath} component={DepartamentDetails}></Route>
+        <Route path={"/Operation"} currentPath={currentPath} component={Operation}></Route>
     </>
   )
 }

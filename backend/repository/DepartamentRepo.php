@@ -9,6 +9,7 @@
                 "SELECT 
                             id_inmueble,
                             calle,
+                            numero_calle,
                             numero_dpto,
                             fecha_creacion,
                             precio_venta,

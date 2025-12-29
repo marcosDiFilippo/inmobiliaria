@@ -22,7 +22,7 @@
         public function getUserRepo () {
             return $this->userRepo;
         }
-        public function validateUser () {
+        public function createUser () {
             $connection = Database::getConnection();
 
             $first_name  = htmlspecialchars(trim($this->requestData["first_name"]));
@@ -50,6 +50,14 @@
                 echo json_encode($e->getMessage());
             }
         }
+        public function deleteUser() {
+            if (!isset($this->requestData["idUser"])) {
+                echo json_encode("A ocurrido un error");
+                return;
+            }
+
+            $this->userRepo->deleteUser($this->requestData["idUser"]);
+        }
     }
 
     $userController = new UserController();
@@ -58,7 +66,10 @@
             echo json_encode($userController->getUserRepo()->getData());
             break;
         case "POST":
-            $userController->validateUser();
+            $userController->createUser();
+            break;
+        case "DELETE":
+            $userController->deleteUser();
             break;
     }
 ?>

@@ -3,12 +3,23 @@ import { useState } from "react"
 export function useFetch () {
     const [dataFetch, setDataFetch] = useState(null)
     
-    async function getDataFetch(url, methodRequest = "", headersRequest = {"Content-Type":"application/x-www-form-urlencoded"}, bodyRequest = "") {
-        const response = await fetch(url, {
+    async function getDataFetch(
+        url, 
+        methodRequest = "GET", 
+        headersRequest = {"Content-Type":"application/json"}, 
+        bodyRequest = null
+    ) 
+    {
+        let structureResponse = {
             method: methodRequest,
-            headers: headersRequest,
-            body: bodyRequest
-        })
+            headers: headersRequest
+        }
+
+        if (bodyRequest && methodRequest != "GET") {
+            structureResponse.body = bodyRequest
+        }
+
+        const response = await fetch(url, structureResponse)
 
         const result = await response.json()
 

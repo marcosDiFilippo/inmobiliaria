@@ -72,6 +72,12 @@ export function DepartamentDetails () {
                     </div>
                 </div>
             }
+            <div>
+                <h2>Descripcion</h2>
+                <p>
+                    {property.descripcion}
+                </p>
+            </div>
         </div>
     );
 }

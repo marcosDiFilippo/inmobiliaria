@@ -68,7 +68,7 @@ export function TableDepartament ({thList, getData, navigateTo, setAlert}) {
             <tbody>
                 {dataTable.map(tdElement => (
                     <tr key={tdElement.id_inmueble}>
-                        <td>{tdElement.calle + " " + tdElement.numero_dpto}</td>
+                        <td>{tdElement.calle + " " + tdElement.numero_calle + ` (${tdElement.numero_dpto})`}</td>
                         <td>{tdElement.fecha_creacion}</td>
                         <td>$ {tdElement.precio_venta}</td>
                         <td>$ {tdElement.precio_alquiler}</td>

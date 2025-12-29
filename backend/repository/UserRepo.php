@@ -42,5 +42,25 @@
                 echo json_encode($e->getMessage());
             }
         }
+
+        public function deleteUser ($idUser) {
+            $connection = Database::getConnection();
+
+            $stmtGetIdUser = $connection->prepare(
+                "SELECT 1 FROM parte_intervinente WHERE id_parte_intervinente = :id"
+            );
+            $stmtGetIdUser->execute(['id' => $idUser]);
+
+            if (!$stmtGetIdUser->fetch()) {
+                return json_encode("No existe el id");
+            }
+
+            $stmtDelete = $connection->prepare(
+                "DELETE FROM parte_intervinente WHERE id_parte_intervinente = :id"
+            );
+            $stmtDelete->execute(['id' => $idUser]);
+
+            return json_encode("Usuario eliminado");
+        }
     }
 ?>

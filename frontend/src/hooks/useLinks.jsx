@@ -10,8 +10,12 @@ export function useLinks () {
             .then(res => {
             setStatusCode(res.status)
             if (statusCode == 200) {
-                setLinks(<><Link href={"/Tenant"} text={"Inquilinos"}></Link>
-                <Link href={"/Departament"} text={"Departamentos"}></Link></>)
+                setLinks(<>
+                <Link href={"/Tenant"} text={"Inquilinos"}></Link>
+                <Link href={"/Departament"} text={"Departamentos"}></Link>
+                <Link href={"/Operation"} text={"Contratos"}></Link>
+                </>
+                )
             }
             else {
                 setLinks(<></>)
