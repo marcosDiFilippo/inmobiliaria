@@ -48,8 +48,6 @@ export function TableDepartament ({thList, getData, navigateTo, setAlert}) {
         }
     }, [dataDelete])
 
-    console.log(dataDelete)
-
     function handleClickDetails (event) {
         event.preventDefault()
         const id_inmueble = Number(event.target.dataset.id)

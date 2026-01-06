@@ -1,0 +1,33 @@
+.input_group {
+    display: flex;
+    gap: 10px;
+}
+
+.input_group input {
+    width: 40%;
+}
+
+.input_group select {
+    width: 30%;
+}
+
+.p_operation {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.operation_options {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.operation_options select {
+    width: 45%;
+}
+
+.operation_parts {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

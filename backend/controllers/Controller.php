@@ -1,4 +1,5 @@
 <?php
+    require_once("../cors.php");
     include_once("../validations/EmptyValidation.php");
     include_once("./MethodController.php");
     abstract class Controller {

@@ -60,15 +60,20 @@
         }
     }
 
-    $userController = new UserController();
     switch($_SERVER["REQUEST_METHOD"]) {
         case "GET":
+            $userController = new UserController();
+
             echo json_encode($userController->getUserRepo()->getData());
             break;
         case "POST":
+            $userController = new UserController();
+
             $userController->createUser();
             break;
         case "DELETE":
+            $userController = new UserController();
+
             $userController->deleteUser();
             break;
     }

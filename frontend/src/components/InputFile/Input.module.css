@@ -1,0 +1,42 @@
+input[type="file"] {
+    display: none;
+}
+
+.input_file_label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 16px;
+    border-radius: 8px;
+
+    background-color: #111111c0;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.input_file_label:hover {
+    background-color: #222;
+}
+
+.input_file_label:active {
+    transform: scale(0.98);
+}
+
+.input_file_label:focus-visible {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+}
+
+input[type="file"]:disabled + .input_file_label,
+.input_file_label.disabled {
+    background-color: #888;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

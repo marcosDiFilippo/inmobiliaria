@@ -24,10 +24,6 @@ export function FormTenant() {
         getDataFetch("http://localhost/inmobiliaria/backend/controllers/UserController.php","POST",{"Content-Type":"application/json"},JSON.stringify(tenant))
     }
 
-    useEffect(() => {
-        console.log(dataFetch)
-    }, [dataFetch])
-
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h2 className={styles.title}>Agregar Inquilino</h2>

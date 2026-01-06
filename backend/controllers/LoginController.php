@@ -1,5 +1,4 @@
 <?php 
-    include_once("../cors.php");
     include_once '../validations/EmptyValidation.php';
     include_once '../validations/EmailValidation.php';
     include_once '../auth/Login.php';

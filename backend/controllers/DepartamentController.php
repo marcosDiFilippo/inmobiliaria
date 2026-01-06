@@ -1,5 +1,4 @@
 <?php
-    require_once("../cors.php");
     include_once("../repository/DepartamentRepo.php");
     include_once("./Controller.php");
     class DepartamentController extends Controller {
@@ -45,17 +44,26 @@
             return $this->departamentRepo;
         }
     }
-    $deapartamentController = new DepartamentController();
-    
     switch ($_SERVER["REQUEST_METHOD"]) {
         case "GET":
+            $deapartamentController = new DepartamentController();
+            
             echo json_encode($deapartamentController->getDepartamentRepo()->getData());
             break;
         case "POST":
+            $deapartamentController = new DepartamentController();
+
             $deapartamentController->receiveJson();
             break;
         case "DELETE":
+            $deapartamentController = new DepartamentController();
+
             $deapartamentController->deleteDepartament();
+            break;
+        default:
+            http_response_code(405);
+            echo json_encode("Método no permitido");
+            
             break;
     }
 ?>

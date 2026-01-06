@@ -27,10 +27,6 @@ export function TableTenant ({getDataUsers, thList}) {
         }
     }
 
-    useEffect(() => {
-        console.log(usersFetch.dataFetch)
-    }, [usersFetch.dataFetch])
-
     function handleClickEdit (event) {
         
     }
