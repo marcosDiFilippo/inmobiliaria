@@ -2,30 +2,31 @@ import styles from './Form.module.css';
 import { InputText } from '../InputText/InputText.jsx';
 import { ButtonSubmit } from '../ButtonSubmit/ButtonSubmit.jsx';
 import { useFetch } from '../../hooks/useFetch.jsx';
-import { useEffect } from 'react';
+import { Select } from "../Select/Select.jsx"
+import { useState, useEffect } from 'react';
+import { InputFile } from "../InputFile/InputFile.jsx"
 
 export function FormTenant() {
     const { dataFetch, getDataFetch } = useFetch()
+    const [valueGendarme, setValueGendarme] = useState(true)
 
     function handleSubmit(e) {
         e.preventDefault();
 
-        const form = new FormData(e.target)
+        const formData = new FormData(e.currentTarget)
 
-        const tenant = {
-            first_name: form.get("first_name"),
-            last_name: form.get("last_name"),
-            phone: form.get("phone"),
-            dni: form.get("dni"),
-            birth_date: form.get("birth_date"),
-            email: form.get("email")
-        }
-
-        getDataFetch("http://localhost/inmobiliaria/backend/controllers/UserController.php","POST",{"Content-Type":"application/json"},JSON.stringify(tenant))
+        getDataFetch("http://localhost/inmobiliaria/backend/controllers/UserController.php"
+            ,"POST"
+            ,null
+            ,formData)
     }
 
+    useEffect(() => {
+        console.log(dataFetch)
+    }, [dataFetch])
+
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
             <h2 className={styles.title}>Agregar Inquilino</h2>
 
             <div className={styles.grid}>
@@ -63,6 +64,33 @@ export function FormTenant() {
                     placeholder="Email"
                     className={styles.full}
                 />
+
+                <div className={styles.last_div}>
+                    <div>
+                        <p>Es Gendarme?</p>
+                        <Select name={"is_gendarme"} options={[
+                            {
+                                id: true,
+                                name: "Si"
+                            },
+                            {
+                                id: false,
+                                name: "No"
+                            }
+                        ]} onChange={(event) => {
+                            if (event.currentTarget.value == "false") {
+                                setValueGendarme(false)
+                                return
+                            }
+                            setValueGendarme(true)
+                        }}></Select>
+                    </div>
+                    
+                    <div className={styles.div_inputs_file}>
+                        <InputFile name={"dni"} textLabel={"Subir Foto DNI"}></InputFile>
+                        <InputFile name={"salary"} textLabel={"Subir Recibo Sueldo"}></InputFile>
+                    </div>
+                </div>
             </div>
 
             <div className={styles.actions}>

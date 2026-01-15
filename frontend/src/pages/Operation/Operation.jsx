@@ -7,6 +7,7 @@ import { InputFile } from "../../components/InputFile/InputFile.jsx";
 import { ButtonAdd } from "../../components/ButtonAdd/ButtonAdd.jsx";
 import { ButtonDelete } from "../../components/ButtonDelete/ButtonDelete.jsx";
 import { useFetch } from "../../hooks/useFetch.jsx";
+import { TableOperation } from "../../components/Table/TableOperation.jsx";
 
 export function Operation () {
     const [counter, setCounter] = useState(1)
@@ -24,45 +25,6 @@ export function Operation () {
     const contractFetch = useFetch()
 
     const propetyFetch = useFetch()
-
-    function handleSubmit(event) {
-        event.preventDefault()
-        
-        const formData = new FormData(event.currentTarget)
-        
-        const parts = []
-
-        let id = 0
-
-        formData.forEach((value, key) => {
-            let dni = 0
-            let rol = 0
-
-            if (key.startsWith("dni_") && value != "") {
-                dni = value
-                rol = formData.get("part_type_" + key.split("_")[1])
-                id = Number(key.split("_")[1])
-            }
-
-            if (dni != 0 && rol != 0) {
-                parts.push({
-                    id: id,
-                    dni: Number(dni),
-                    rol: Number(rol)
-                })
-            }
-            id++                        
-        })
-
-        formData.append("parts", JSON.stringify(parts))
-
-        contractFetch.getDataFetch(
-            "http://localhost/inmobiliaria/backend/controllers/ContractController.php",
-            "POST",
-            null,
-            formData
-        )
-    }
 
     function handleClickAdd () {
         setInputs(() => {
@@ -135,22 +97,59 @@ export function Operation () {
         })
     }
 
-    useEffect(() => {
-        if (contractFetch.dataFetch != null && contractFetch.dataFetch != undefined) {
-            console.log(contractFetch.dataFetch)
-        }
-    }, [contractFetch.dataFetch])
+    function handleSubmit(event) {
+        event.preventDefault()
+        
+        const formData = new FormData(event.currentTarget)
+
+        const parts = []
+
+        let id = 0
+
+        formData.forEach((value, key) => {
+            let dni = 0
+            let rol = 0
+
+            if (key.startsWith("dni_") && value != "") {
+                dni = value
+                rol = formData.get("part_type_" + key.split("_")[1])
+                id = Number(key.split("_")[1])
+            }
+
+            if (dni != 0 && rol != 0) {
+                parts.push({
+                    id: id,
+                    dni: Number(dni),
+                    rol: Number(rol)
+                })
+            }
+            id++                        
+        })
+
+        formData.append("parts", JSON.stringify(parts))
+
+        contractFetch.getDataFetch(
+            "http://localhost/inmobiliaria/backend/controllers/ContractController.php",
+            "POST",
+            null,
+            formData
+        )
+    }
 
     useEffect(() => {
         propetyFetch.getDataFetch(
-            "http://localhost/inmobiliaria/backend/controllers/DepartamentController.php",
+            "http://localhost/inmobiliaria/backend/controllers/DepartamentController.php?action=getPropertysEmpties",
             "GET"
         ) 
+        if (propetyFetch.dataFetch != null && propetyFetch.dataFetch.length == 0) {
+            setIsValid(false)
+        }
+        else {
+            setIsValid(true)
+        }
     }, [])
 
     useEffect(() => {
-        console.log(propetyFetch.dataFetch)
-        
         if (propetyFetch.dataFetch != null || propetyFetch.dataFetch != undefined) {
             setPropertyOptions(() => {
                 const copy = []
@@ -167,6 +166,10 @@ export function Operation () {
         }
     }, [propetyFetch.dataFetch])
 
+    useEffect(() => {
+        console.log(contractFetch.dataFetch)
+    }, [contractFetch.dataFetch])
+
     return (
         <>
             <h1>Contratos</h1>
@@ -175,8 +178,11 @@ export function Operation () {
             <ButtonAdd onClick={handleClickAdd}>
                 Agregar Parte
             </ButtonAdd>
-            <Select name={"property"} options={propertyOptions}></Select>
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            {
+            isValid == false 
+            ? <><p>No hay propiedades disponibles - Estan todas las propiedas establecidas mediante un contrato</p></> 
+            : <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <Select name={"property"} options={propertyOptions}></Select>
                 <div className={styles.operation_parts}>
                     {inputs.map(inp => (
                         <div className={styles.input_group} key={inp.id}>
@@ -191,8 +197,6 @@ export function Operation () {
                                     name: "Garante"
                                 }
                             ]} onChange={handleChangeSelect}></Select>
-                            <InputFile textLabel={"Subir DNI"} name={"file_dni_" + inp.value}></InputFile>
-                            <InputFile textLabel={"Subir Recibo de Sueldo"} name={"file_recibo_" + inp.value}></InputFile>
                             <ButtonDelete id={inp.id} handleClickDelete={handleClickDelete}></ButtonDelete>
                         </div>
                     ))}
@@ -241,9 +245,15 @@ export function Operation () {
                     <InputText type="date" name="start_date"></InputText>
                 </div>
                 <div>
-                    <ButtonSubmit text="Crear Contrato" disabled={isValid}></ButtonSubmit>
+                    <InputFile textLabel={"Subir Contrato"} name={"file_contract"}></InputFile>
                 </div>
-            </form>
+                <div>
+                    <ButtonSubmit text="Crear Contrato"></ButtonSubmit>
+                </div>
+            </form>}
+            
+            
+            <TableOperation></TableOperation>
         </>
     )
 }

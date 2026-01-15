@@ -12,81 +12,54 @@
         public function createContract() {
             $dataCreated = [];
 
-            $operationalPlan = $_POST["operational_plan"] ?? "";
-            $operationTerm = $_POST["operation_term"] ?? "";
-            $startDate = $_POST["start_date"] ?? "";
+            $parts = [];
 
+            array_push($dataCreated, $parts);
+
+            $operationalPlan = (int) $_POST["operational_plan"] ?? -1;
+            $operationTerm = (int) $_POST["operation_term"] ?? -1;
+            $startDate = $_POST["start_date"] ?? "";
+            $property = (int) $_POST["property"] ?? -1;
+            
             array_push($dataCreated, [
                 "operationalPlan" => $operationalPlan,
                 "operationTerm" => $operationTerm,
-                "startDate" => $startDate
+                "startDate" => $startDate,
+                "property" => $property
             ]);
-
-            $keysFiles = array_keys($_FILES);
-
-            $uploadedFiles = [];
-
-            foreach ($keysFiles as $key) {
-                $currentKey = explode("_", $key);   
-
-                $_FILES[$key]["dni"] = $currentKey[2];
-                $_FILES[$key]["type_document"] = $currentKey[1];
-
-                array_push($uploadedFiles, $_FILES[$key]);
-            }
-
-            $parts = [];
-
-            $operationalPlan = "";
-            $operationTerm = "";
-            $startDate = "";
-
-            $parts = json_decode($_POST["parts"], true);
-
-            foreach ($parts as $part) {
+            
+            $partsDecode = json_decode($_POST["parts"], true);
+            
+            foreach ($partsDecode as $part) {
                 $dni = $part["dni"];
                 $rol = $part["rol"];
-                $documents = [];
 
-                for ($i = count($uploadedFiles) - 1; $i >= 0; $i--) {
-                    if ($uploadedFiles[$i]["dni"] == $dni) {
-
-                        $documents[] = [
-                            "type_document" => $uploadedFiles[$i]["type_document"],
-                            "name" => $uploadedFiles[$i]["name"],
-                            "tmp_name" => $uploadedFiles[$i]["tmp_name"],
-                            "size" => $uploadedFiles[$i]["size"],
-                            "error" => $uploadedFiles[$i]["error"]
-                        ];
-                        
-                        array_splice($uploadedFiles, $i, 1);
-                    }
-                }
-
-                array_push($dataCreated, [
+                array_push($dataCreated[0], [
                     "dni" => $dni,
-                    "rol" => $rol,
-                    "documents" => $documents
+                    "rol" => $rol
                 ]);
             }
 
-            //$this->contractRepo->insertToDatabase();
+            $contract = null;
+
+            if (isset($_FILES["file_contract"])) {
+                $contract = $_FILES["file_contract"];
+            }
+
+            array_push($dataCreated, $contract);
             
             echo json_encode($dataCreated);
-            /*
-            try {
-                
-            } catch (Exception $e) {
-                http_response_code(500);
-                echo json_encode("Error al crear el contrato: " . $e->getMessage());
-            }
-            */
+        }
+
+        public function getContractRepo () {
+            return $this->contractRepo;
         }
     }
     switch ($_SERVER["REQUEST_METHOD"]) {
         case "GET":
             $contractController = new ContractController();
             
+            echo json_encode($contractController->getContractRepo()->getData());
             break;
         case "POST":
             $contractController = new ContractController();

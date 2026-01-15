@@ -50,6 +50,7 @@ export function TableTenant ({getDataUsers, thList}) {
                         <td>{tdElement.id_parte_intervinente}</td>
                         <td>{tdElement.nombre + " " + tdElement.apellido}</td>
                         <td>{tdElement.fecha_nacimiento}</td>
+                        <td>{tdElement.telefono}</td>
                         <td>{tdElement.dni}</td>
                         <td>{tdElement.email}</td>
                         <td className={styles.td_actions}>

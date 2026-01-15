@@ -9,20 +9,20 @@ export function useFetch () {
         headersRequest = null,
         bodyRequest = null
     ) {
-        const structureResponse = {
+        const structureRequest = {
             method: methodRequest
         }
 
         //cuando solo se pone la solo el nombre de la variable en el if es porque verifica si no es null o undefined, es lo mismo que poner (headersRequest != null && headersRequest != undefined)
         if (headersRequest) {
-            structureResponse.headers = headersRequest
+            structureRequest.headers = headersRequest
         }
 
         if (bodyRequest && methodRequest !== "GET") {
-            structureResponse.body = bodyRequest
+            structureRequest.body = bodyRequest
         }
 
-        const response = await fetch(url, structureResponse)
+        const response = await fetch(url, structureRequest)
         const result = await response.json()
         setDataFetch(result)
     }

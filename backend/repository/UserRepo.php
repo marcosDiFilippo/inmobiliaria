@@ -12,35 +12,59 @@
 
             return $result;
         }   
-        public function insertToDatabase ($tenant) { 
+        public function createUser (string $dataTenant) { 
             $connection = Database::getConnection();
 
-            //preparar el insert
-            try {
-                $stmtUser = $connection->prepare("INSERT INTO parte_intervinente (nombre, apellido, dni, fecha_nacimiento, email, telefono) VALUES (
-                    :first_name,
-                    :last_name,
-                    :dni,
-                    :birth_date,
-                    :email,
-                    :phone
-                )");
-                
-                $stmtUser->execute([
-                    ':first_name' => $tenant['first_name'],
-                    ':last_name'  => $tenant['last_name'],
-                    ':dni'        => $tenant['dni'],
-                    ':birth_date' => $tenant['birth_date'],
-                    ':email'      => $tenant['email'],
-                    ':phone'      => $tenant['phone']
-                ]);
+            $tenant = json_decode($dataTenant, TRUE);
+            
+            $stmtUser = $connection->prepare("INSERT INTO parte_intervinente (nombre, apellido, dni, fecha_nacimiento, email, telefono) VALUES (
+                :first_name,
+                :last_name,
+                :dni,
+                :birth_date,
+                :email,
+                :phone
+            )");
+            
+            $stmtUser->execute([
+                ':first_name' => $tenant['first_name'],
+                ':last_name'  => $tenant['last_name'],
+                ':dni'        => $tenant['dni'],
+                ':birth_date' => $tenant['birth_date'],
+                ':email'      => $tenant['email'],
+                ':phone'      => $tenant['phone']
+            ]);
 
-                echo json_encode([
-                    "succes" => true
-                ]);
-            } catch (Exception $e) {
-                echo json_encode($e->getMessage());
-            }
+            $id_part = $connection->lastInsertId();
+
+            return [
+                "id_part" => $id_part,
+                "dni" => $tenant["dni"]
+            ];
+        }
+        public function insertDocumentsFromUser (array $dataPart, array $files) {
+            $connection = Database::getConnection();
+
+            $stmt = $connection->prepare("INSERT INTO `documentacion_parte`
+            (`fk_tipo_documento`, `fk_parte_intervinente`, `documento`) 
+            VALUES 
+            (
+            :fk_type_document
+            ,:fk_part
+            ,:document)"
+            );
+
+            $stmt->execute([
+                ":fk_type_document" => $files["dni"]["fk_type_document"],
+                ":fk_part" => $dataPart["id_part"],
+                ":document" => $files["dni"]["hash"]
+            ]);
+
+            $stmt->execute([
+                ":fk_type_document" => $files["salary"]["fk_type_document"],
+                ":fk_part" => $dataPart["id_part"],
+                ":document" => $files["salary"]["hash"]
+            ]);
         }
 
         public function deleteUser ($idUser) {

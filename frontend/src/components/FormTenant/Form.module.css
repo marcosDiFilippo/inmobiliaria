@@ -28,3 +28,10 @@
 .actions {
     margin-top: 24px;
 }
+
+.div_inputs_file {
+    margin-top: 1rem;
+    display: flex;
+    column-gap: 1rem;
+    width: 100%;
+}

@@ -47,6 +47,10 @@
     switch ($_SERVER["REQUEST_METHOD"]) {
         case "GET":
             $deapartamentController = new DepartamentController();
+            if (isset($_GET["action"]) == "getPropertysEmpties") {
+                echo json_encode($deapartamentController->getDepartamentRepo()->getPropertyesEmpties());
+                break;
+            }
             
             echo json_encode($deapartamentController->getDepartamentRepo()->getData());
             break;

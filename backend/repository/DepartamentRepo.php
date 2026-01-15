@@ -180,5 +180,26 @@
                 ]);
             }
         }
+        
+        public function getPropertyesEmpties () {
+            $connection = Database::getConnection();
+
+            //trae todas las direcciones las cuales no estan asociadas a el conjunto de operacion
+            $stmt = $connection->query("SELECT 
+                inmueble.id_inmueble,
+                locacion.calle,
+                locacion.numero_calle,
+                locacion.numero_dpto
+            FROM inmueble
+            INNER JOIN locacion 
+                ON inmueble.fk_locacion = locacion.id_locacion
+            LEFT JOIN operacion 
+                ON inmueble.id_inmueble = operacion.fk_inmueble
+            WHERE operacion.fk_inmueble IS NULL");
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+    }
     }
 ?>

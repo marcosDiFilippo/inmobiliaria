@@ -20,18 +20,22 @@ export function Tenant () {
         },
         {
             id: 4,
-            field: "Dni"
+            field: "Telefono"
         },
         {
             id: 5,
-            field: "Email"
+            field: "Dni"
         },
         {
             id: 6,
-            field: "Acciones"
+            field: "Email"
         },
         {
             id: 7,
+            field: "Acciones"
+        },
+        {
+            id: 8,
             field: "Detalles"
         }
     ]
