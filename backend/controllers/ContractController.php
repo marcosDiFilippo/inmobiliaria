@@ -1,12 +1,15 @@
 <?php
     include_once("Controller.php");
     include_once("../repository/ContractRepo.php");
+    include_once("../service/UserService.php");
 
     class ContractController extends Controller {
         private ContractRepo $contractRepo;
+        private UserService $userService;
         public function __construct() {
-            $this->contractRepo = new ContractRepo();
             parent::__construct();
+            $this->contractRepo = new ContractRepo();
+            $this->userService = new UserService();
         }
 
         public function createContract() {
@@ -14,19 +17,19 @@
 
             $parts = [];
 
-            array_push($dataCreated, $parts);
+            $dataCreated["parts"] = $parts;
 
             $operationalPlan = (int) $_POST["operational_plan"] ?? -1;
             $operationTerm = (int) $_POST["operation_term"] ?? -1;
             $startDate = $_POST["start_date"] ?? "";
             $property = (int) $_POST["property"] ?? -1;
             
-            array_push($dataCreated, [
+            $dataCreated["information"] = [
                 "operationalPlan" => $operationalPlan,
                 "operationTerm" => $operationTerm,
                 "startDate" => $startDate,
                 "property" => $property
-            ]);
+            ];
             
             $partsDecode = json_decode($_POST["parts"], true);
             
@@ -34,7 +37,7 @@
                 $dni = $part["dni"];
                 $rol = $part["rol"];
 
-                array_push($dataCreated[0], [
+                array_push($dataCreated["parts"], [
                     "dni" => $dni,
                     "rol" => $rol
                 ]);
@@ -46,9 +49,9 @@
                 $contract = $_FILES["file_contract"];
             }
 
-            array_push($dataCreated, $contract);
-            
-            echo json_encode($dataCreated);
+            $dataCreated["contract"] = $contract;   
+
+            $this->userService->verificateDniOfUsers($dataCreated["parts"]);
         }
 
         public function getContractRepo () {

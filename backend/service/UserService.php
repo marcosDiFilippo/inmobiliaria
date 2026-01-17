@@ -37,5 +37,48 @@
                 echo json_encode($e->getMessage());
             }
         }
+        public function validateDniRepeats (array $users) {
+            for ($i = 0; $i < count($users); $i++) {
+                $currentDni = $users[$i]["dni"];
+                
+                if (!isset($users[$i + 1])) {
+                    break;
+                }
+                
+                if ($currentDni == $users[$i + 1]["dni"]) {
+                    throw new Exception("No se pueden repetir los dnis entre las partes");
+                }
+            }
+        }
+        public function verificateDniOfUsers (array $users) {
+            try {
+                $this->validateDniRepeats($users);
+
+                $usersOfDatabase = $this->userRepo->getData();
+
+                $this->searchUserForDni($users, $usersOfDatabase);
+            
+                echo json_encode("todo bien");
+            }
+            catch (Exception $e) {
+                echo json_encode($e->getMessage());
+            }
+        }
+        
+        public function searchUserForDni (array $users, array $usersOfDatabase) {
+            $usersDnis = [];
+
+            foreach ($usersOfDatabase as $userOfDatabase) {
+                $usersDnis[$userOfDatabase["dni"]] = true;
+            }
+
+            for ($i = count($users) - 1; $i >= 0; $i--) {
+                if (isset($usersDnis[$users[$i]["dni"]]) == true) {
+                    array_splice($users, $i, 1);
+                    continue;
+                }
+                throw new Exception("El dni " . $users[$i]["dni"] . " no fue encontrado en el registro de inquilinos");
+            }
+        }
     }
 ?>
