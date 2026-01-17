@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 13-12-2025 a las 21:40:35
+-- Tiempo de generación: 17-01-2026 a las 15:43:19
 -- Versión del servidor: 9.1.0
 -- Versión de PHP: 8.3.14
 
@@ -39,6 +39,27 @@ CREATE TABLE IF NOT EXISTS `acuerdo_pago` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id_admin` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(45) NOT NULL,
+  `contrasenia` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_admin`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Volcado de datos para la tabla `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `email`, `contrasenia`) VALUES
+(1, 'a@a', '0cc175b9c0f1b6a831c399e269772661');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ambiente`
 --
 
@@ -48,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `ambiente` (
   `nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`id_ambiente`),
   UNIQUE KEY `id_ambientes_UNIQUE` (`id_ambiente`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `ambiente`
@@ -56,43 +77,56 @@ CREATE TABLE IF NOT EXISTS `ambiente` (
 
 INSERT INTO `ambiente` (`id_ambiente`, `nombre`) VALUES
 (1, 'Cocina'),
-(2, 'Baño'),
+(2, 'Banio'),
 (3, 'Cochera'),
 (4, 'Habitacion'),
 (5, 'Living'),
 (6, 'Patio'),
-(7, 'Terraza');
+(7, 'Terraza'),
+(8, 'Parrilla'),
+(9, 'Balcon'),
+(10, 'Comedor'),
+(11, 'Lavadero');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `documentacion`
+-- Estructura de tabla para la tabla `contrato_operacion`
 --
 
-DROP TABLE IF EXISTS `documentacion`;
-CREATE TABLE IF NOT EXISTS `documentacion` (
-  `id_documentacion` int NOT NULL AUTO_INCREMENT,
-  `fk_tipo_documento` int NOT NULL,
-  PRIMARY KEY (`id_documentacion`),
-  UNIQUE KEY `id_documentaciones_UNIQUE` (`id_documentacion`),
-  KEY `fk_Documentaciones_Tipos_Documentos1_idx` (`fk_tipo_documento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `documentacion_presentada`
---
-
-DROP TABLE IF EXISTS `documentacion_presentada`;
-CREATE TABLE IF NOT EXISTS `documentacion_presentada` (
-  `fk_documentacion` int NOT NULL,
+DROP TABLE IF EXISTS `contrato_operacion`;
+CREATE TABLE IF NOT EXISTS `contrato_operacion` (
+  `id_contrato_img` int NOT NULL AUTO_INCREMENT,
+  `img_contrato` varchar(100) NOT NULL,
   `fk_operacion` int NOT NULL,
-  `fecha` date NOT NULL,
-  PRIMARY KEY (`fk_documentacion`,`fk_operacion`),
-  KEY `fk_Documentaciones_has_Operaciones_Operaciones1_idx` (`fk_operacion`),
-  KEY `fk_Documentaciones_has_Operaciones_Documentaciones1_idx` (`fk_documentacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`id_contrato_img`),
+  KEY `fk_contrato_operacion` (`fk_operacion`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentacion_parte`
+--
+
+DROP TABLE IF EXISTS `documentacion_parte`;
+CREATE TABLE IF NOT EXISTS `documentacion_parte` (
+  `id_documentacion_parte` int NOT NULL AUTO_INCREMENT,
+  `fk_tipo_documento` int NOT NULL,
+  `fk_parte_intervinente` int NOT NULL,
+  `documento` varchar(100) NOT NULL,
+  PRIMARY KEY (`id_documentacion_parte`),
+  KEY `fk_parte_documentacion` (`fk_parte_intervinente`),
+  KEY `fk_tipo_documentacion` (`fk_tipo_documento`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Volcado de datos para la tabla `documentacion_parte`
+--
+
+INSERT INTO `documentacion_parte` (`id_documentacion_parte`, `fk_tipo_documento`, `fk_parte_intervinente`, `documento`) VALUES
+(1, 1, 4, 'a60161754ca5bb9594dbb22b135a0f38.webp'),
+(2, 2, 4, 'b3643bbed757e0ae847bc1af60531705.webp');
 
 -- --------------------------------------------------------
 
@@ -103,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `documentacion_presentada` (
 DROP TABLE IF EXISTS `estado_inmueble`;
 CREATE TABLE IF NOT EXISTS `estado_inmueble` (
   `id_estado_inmueble` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
+  `estado` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id_estado_inmueble`),
   UNIQUE KEY `id_estado_inmueble_UNIQUE` (`id_estado_inmueble`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
@@ -112,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `estado_inmueble` (
 -- Volcado de datos para la tabla `estado_inmueble`
 --
 
-INSERT INTO `estado_inmueble` (`id_estado_inmueble`, `nombre`) VALUES
+INSERT INTO `estado_inmueble` (`id_estado_inmueble`, `estado`) VALUES
 (1, 'Excelente'),
 (2, 'Muy Bueno'),
 (3, 'Bueno'),
@@ -161,7 +195,16 @@ CREATE TABLE IF NOT EXISTS `inmueble` (
   KEY `fk_Inmuebles_Locaciones1_idx` (`fk_locacion`),
   KEY `fk_inmueble_tipo_inmueble1_idx` (`fk_tipo_inmueble`),
   KEY `fk_inmueble_estado_inmueble1_idx` (`fk_estado_inmueble`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Volcado de datos para la tabla `inmueble`
+--
+
+INSERT INTO `inmueble` (`id_inmueble`, `descripcion`, `fecha_creacion`, `precio_venta`, `precio_alquiler`, `fk_locacion`, `fk_tipo_inmueble`, `fk_estado_inmueble`) VALUES
+(8, 'int cespedes', '2025-12-28', 6780000, 450000, 21, 1, 2),
+(9, 'INT 2', '2026-01-06', 12000000, 670000, 22, 1, 2),
+(10, 'int 3', '2026-01-09', 67000000, 567000, 23, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -179,6 +222,40 @@ CREATE TABLE IF NOT EXISTS `inmueble_ambiente` (
   KEY `fk_Inmuebles_has_Ambientes_Inmuebles1_idx` (`fk_inmueble`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+--
+-- Volcado de datos para la tabla `inmueble_ambiente`
+--
+
+INSERT INTO `inmueble_ambiente` (`fk_inmueble`, `fk_ambientes`, `cantidad_ambientes`) VALUES
+(8, 1, 1),
+(8, 2, 1),
+(8, 3, 1),
+(8, 4, 2),
+(8, 5, 1),
+(8, 6, 1),
+(8, 8, 1),
+(8, 10, 1),
+(8, 11, 1),
+(9, 1, 1),
+(9, 2, 1),
+(9, 3, 1),
+(9, 4, 2),
+(9, 5, 1),
+(9, 6, 1),
+(9, 8, 1),
+(9, 10, 1),
+(9, 11, 1),
+(10, 1, 1),
+(10, 2, 1),
+(10, 3, 1),
+(10, 4, 1),
+(10, 5, 1),
+(10, 6, 1),
+(10, 8, 1),
+(10, 9, 1),
+(10, 10, 1),
+(10, 11, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -188,13 +265,21 @@ CREATE TABLE IF NOT EXISTS `inmueble_ambiente` (
 DROP TABLE IF EXISTS `locacion`;
 CREATE TABLE IF NOT EXISTS `locacion` (
   `id_locacion` int NOT NULL AUTO_INCREMENT,
-  `localidad` varchar(45) NOT NULL,
   `calle` varchar(45) NOT NULL,
   `numero_calle` int NOT NULL,
   `numero_dpto` int DEFAULT NULL,
   PRIMARY KEY (`id_locacion`),
   UNIQUE KEY `id_locacion_UNIQUE` (`id_locacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Volcado de datos para la tabla `locacion`
+--
+
+INSERT INTO `locacion` (`id_locacion`, `calle`, `numero_calle`, `numero_dpto`) VALUES
+(21, 'Intendente Cespedes', 847, 1),
+(22, 'Intendente Cespedes', 847, 2),
+(23, 'Intendente Cespedes', 847, 3);
 
 -- --------------------------------------------------------
 
@@ -216,7 +301,15 @@ CREATE TABLE IF NOT EXISTS `operacion` (
   KEY `fk_Operaciones_Inmuebles1_idx` (`fk_inmueble`),
   KEY `fk_operacion_plazo_operacion1_idx` (`fk_plazo_operacion`),
   KEY `fk_operacion_plan_operacion1_idx` (`fk_plan_operacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Volcado de datos para la tabla `operacion`
+--
+
+INSERT INTO `operacion` (`id_operacion`, `fecha_inicio`, `fecha_vencimiento`, `monto_total`, `fk_inmueble`, `fk_plazo_operacion`, `fk_plan_operacion`) VALUES
+(2, '2026-01-06', '2026-01-06', 56000, 8, 1, 1),
+(3, '2026-01-06', '2026-01-06', 56000, 9, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -233,16 +326,18 @@ CREATE TABLE IF NOT EXISTS `parte_intervinente` (
   `fecha_nacimiento` date NOT NULL,
   `email` varchar(45) NOT NULL,
   `apellido` varchar(45) NOT NULL,
+  `es_gendarme` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_parte_intervinente`),
   UNIQUE KEY `id_partes_intervinentes_UNIQUE` (`id_parte_intervinente`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `parte_intervinente`
 --
 
-INSERT INTO `parte_intervinente` (`id_parte_intervinente`, `dni`, `nombre`, `telefono`, `fecha_nacimiento`, `email`, `apellido`) VALUES
-(1, 1, 'marcos', 23, '2007-06-26', 'marcos@gmail.com', 'di filippo');
+INSERT INTO `parte_intervinente` (`id_parte_intervinente`, `dni`, `nombre`, `telefono`, `fecha_nacimiento`, `email`, `apellido`, `es_gendarme`) VALUES
+(1, 1, 'marcos', 23, '2007-06-26', 'a@a', 'di filippo', 0),
+(4, 47911625, 'Marcos', 2147483647, '2007-06-26', 'marcosdf788@gmail.com', 'Di Filippo', 0);
 
 -- --------------------------------------------------------
 
@@ -377,7 +472,7 @@ CREATE TABLE IF NOT EXISTS `tipo_garantia` (
 DROP TABLE IF EXISTS `tipo_inmueble`;
 CREATE TABLE IF NOT EXISTS `tipo_inmueble` (
   `id_tipo_inmueble` int NOT NULL,
-  `nombre` varchar(45) NOT NULL,
+  `tipo` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id_tipo_inmueble`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -385,10 +480,11 @@ CREATE TABLE IF NOT EXISTS `tipo_inmueble` (
 -- Volcado de datos para la tabla `tipo_inmueble`
 --
 
-INSERT INTO `tipo_inmueble` (`id_tipo_inmueble`, `nombre`) VALUES
+INSERT INTO `tipo_inmueble` (`id_tipo_inmueble`, `tipo`) VALUES
 (1, 'Departamento'),
 (2, 'Casa'),
-(3, 'Cancha');
+(3, 'Cancha'),
+(4, 'Lote');
 
 --
 -- Restricciones para tablas volcadas
@@ -400,19 +496,6 @@ INSERT INTO `tipo_inmueble` (`id_tipo_inmueble`, `nombre`) VALUES
 ALTER TABLE `acuerdo_pago`
   ADD CONSTRAINT `fk_Operaciones_has_Formas_Pago_Formas_Pago1` FOREIGN KEY (`fk_forma_pago`) REFERENCES `forma_pago` (`id_forma_pago`),
   ADD CONSTRAINT `fk_Operaciones_has_Formas_Pago_Operaciones1` FOREIGN KEY (`fk_operacion`) REFERENCES `operacion` (`id_operacion`);
-
---
--- Filtros para la tabla `documentacion`
---
-ALTER TABLE `documentacion`
-  ADD CONSTRAINT `fk_Documentaciones_Tipos_Documentos1` FOREIGN KEY (`fk_tipo_documento`) REFERENCES `tipo_documento` (`id_tipo_documento`);
-
---
--- Filtros para la tabla `documentacion_presentada`
---
-ALTER TABLE `documentacion_presentada`
-  ADD CONSTRAINT `fk_Documentaciones_has_Operaciones_Documentaciones1` FOREIGN KEY (`fk_documentacion`) REFERENCES `documentacion` (`id_documentacion`),
-  ADD CONSTRAINT `fk_Documentaciones_has_Operaciones_Operaciones1` FOREIGN KEY (`fk_operacion`) REFERENCES `operacion` (`id_operacion`);
 
 --
 -- Filtros para la tabla `inmueble`
