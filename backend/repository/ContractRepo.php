@@ -1,7 +1,7 @@
 <?php
     include_once("Repository.php");
     class ContractRepo extends Repository {
-        public function insertToDatabase () {
+        public function insertToDatabase (array $data) {
             $connection = Database::getConnection();
 
             

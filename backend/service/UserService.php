@@ -51,18 +51,11 @@
             }
         }
         public function verificateDniOfUsers (array $users) {
-            try {
-                $this->validateDniRepeats($users);
+            $this->validateDniRepeats($users);
 
-                $usersOfDatabase = $this->userRepo->getData();
+            $usersOfDatabase = $this->userRepo->getData();
 
-                $this->searchUserForDni($users, $usersOfDatabase);
-            
-                echo json_encode("todo bien");
-            }
-            catch (Exception $e) {
-                echo json_encode($e->getMessage());
-            }
+            $this->searchUserForDni($users, $usersOfDatabase);
         }
         
         public function searchUserForDni (array $users, array $usersOfDatabase) {

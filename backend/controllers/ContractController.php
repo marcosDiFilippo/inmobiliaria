@@ -2,14 +2,17 @@
     include_once("Controller.php");
     include_once("../repository/ContractRepo.php");
     include_once("../service/UserService.php");
+    include_once("../service/ContractService.php");
 
     class ContractController extends Controller {
         private ContractRepo $contractRepo;
         private UserService $userService;
+        private ContractService $contractService;
         public function __construct() {
             parent::__construct();
             $this->contractRepo = new ContractRepo();
             $this->userService = new UserService();
+            $this->contractService = new ContractService();       
         }
 
         public function createContract() {
@@ -51,7 +54,7 @@
 
             $dataCreated["contract"] = $contract;   
 
-            $this->userService->verificateDniOfUsers($dataCreated["parts"]);
+            $this->contractService->createContract($dataCreated);
         }
 
         public function getContractRepo () {
