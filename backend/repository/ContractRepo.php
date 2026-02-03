@@ -4,7 +4,16 @@
         public function insertToDatabase (array $data) {
             $connection = Database::getConnection();
 
-            
+            $stmt = $connection->prepare("INSERT INTO `operacion`(`fecha_inicio`, `fecha_vencimiento`, `monto_total`, `fk_inmueble`, `fk_plazo_operacion`, `fk_plan_operacion`) VALUES (':startDate',':endDate',':price',':fk_property',':fk_term',':fk_plan')");
+
+            $stmt->execute([
+                ":startDate" => $data["information"]["startDate"],
+                ":endDate" => $data["information"]["endDate"],
+                ":price" => $data["dataProperty"]["rental_price"],
+                ":fk_property" => $data["dataProperty"]["id_property"],
+                ":fk_term" => $data["information"]["operationTerm"],
+                ":fk_plan" => $data["information"]["operationalPlan"]
+            ]);
         }
         public function getData()
         {

@@ -43,8 +43,7 @@ export function Departament ({navigateTo}) {
     return (
         <>
             <h2>Departamentos</h2>
-            <h3>Carga De Departamentos</h3>
-
+            
             <OpenModalButton></OpenModalButton>
 
             {alert}

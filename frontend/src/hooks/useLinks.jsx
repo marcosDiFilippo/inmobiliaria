@@ -11,9 +11,12 @@ export function useLinks () {
             setStatusCode(res.status)
             if (statusCode == 200) {
                 setLinks(<>
-                <Link href={"/Tenant"} text={"Inquilinos"}></Link>
-                <Link href={"/Departament"} text={"Departamentos"}></Link>
-                <Link href={"/Operation"} text={"Contratos"}></Link>
+                <div>
+                    <Link href={"/Home"} text={"Inicio"}></Link>
+                    <Link href={"/Tenant"} text={"Inquilinos"}></Link>
+                    <Link href={"/Departament"} text={"Departamentos"}></Link>
+                    <Link href={"/Operation"} text={"Contratos"}></Link>
+                </div>
                 </>
                 )
             }

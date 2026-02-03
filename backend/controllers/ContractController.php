@@ -24,7 +24,7 @@
 
             $operationalPlan = (int) $_POST["operational_plan"] ?? -1;
             $operationTerm = (int) $_POST["operation_term"] ?? -1;
-            $startDate = $_POST["start_date"] ?? "";
+            $startDate = new DateTime($_POST["start_date"]) ?? "";
             $property = (int) $_POST["property"] ?? -1;
             
             $dataCreated["information"] = [

@@ -1,10 +1,13 @@
 <?php
     include_once("UserService.php");
+    include_once("../repository/ContractRepo.php");
     class ContractService {
         private UserService $userService;  
+        private ContractRepo $contractRepo;
 
         public function __construct() {
             $this->userService = new UserService();
+            $this->contractRepo = new ContractRepo();
         }
 
         public function createContract(array $data) {
@@ -19,7 +22,17 @@
 
                 $data["dataProperty"] = $dataProperty;
 
-                echo json_encode($data["dataProperty"]);
+                $termInMonths = $this->getTermInMonths($data["information"]["operationTerm"]);
+
+                $endDate = $this->calculateEndDate($data["information"]["startDate"], $termInMonths);
+
+                $data["information"]["startDate"] = $data["information"]["startDate"]->format("Y-m-d");
+
+                $data["information"]["endDate"] = $endDate->format("Y-m-d");
+
+                //$this->contractRepo->insertToDatabase($data);
+
+                echo json_encode($data);
 
                 $connection->commit();
             }
@@ -40,6 +53,30 @@
             $dataProperty = $result->fetch(PDO::FETCH_ASSOC);
             
             return ["id_property" => $dataProperty["id_inmueble"], "rental_price" => (int) $dataProperty["precio_alquiler"]];
+        }
+        public function calculateEndDate (DateTime $startDate, int $termInMonths) {
+            $yearOfStartDate = (int) $startDate->format("Y");
+            $monthOfStartDate = (int) $startDate->format("m");
+            $dayOfStartDate = (int) $startDate->format("d");
+
+            $yearsAmount = $yearOfStartDate + ($termInMonths / 12);
+
+            return new DateTime("$yearsAmount-$monthOfStartDate-$dayOfStartDate");
+        }
+        public function getTermInMonths($id_term) {
+            $connection = Database::getConnection();
+
+            $result = $connection->query(
+                "SELECT * FROM `plazo_operacion` WHERE id_plazo_operacion=$id_term"
+            );
+
+            if ($result->rowCount() == 0) {
+                throw new Exception("Ocurrio un error en el registro del plazo");
+            }
+
+            $dataTerm = $result->fetch(PDO::FETCH_ASSOC);
+            
+            return $dataTerm["cantidad_meses"];
         }
     }
 ?>

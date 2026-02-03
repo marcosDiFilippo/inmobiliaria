@@ -42,8 +42,6 @@ export function Tenant () {
 
     return (
         <>
-            <h2>Inquilinos - Locatarios</h2>
-
             <FormTenant></FormTenant>
 
             <TableTenant getDataUsers={getDataUsers} thList={thList}></TableTenant>
