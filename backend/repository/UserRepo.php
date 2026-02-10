@@ -86,5 +86,16 @@
 
             return json_encode("Usuario eliminado");
         }
+
+        public function getUserById (int $id) {
+            $connection = Database::getConnection();
+
+            $stmt = $connection->prepare(
+                "SELECT * FROM parte_intervinente WHERE id_parte_intervinente = :id"
+            );
+            $stmt->execute(['id' => $id]);
+
+            return $stmt->fetch();
+        }
     }
 ?>

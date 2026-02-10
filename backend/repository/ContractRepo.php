@@ -4,12 +4,16 @@
         public function insertToDatabase (array $data) {
             $connection = Database::getConnection();
 
-            $stmt = $connection->prepare("INSERT INTO `operacion`(`fecha_inicio`, `fecha_vencimiento`, `monto_total`, `fk_inmueble`, `fk_plazo_operacion`, `fk_plan_operacion`) VALUES (':startDate',':endDate',':price',':fk_property',':fk_term',':fk_plan')");
+            $stmt = $connection->prepare("
+                INSERT INTO operacion
+                (fecha_inicio, fecha_vencimiento, precio_inicial, fk_inmueble, fk_plazo_operacion, fk_plan_operacion)
+                VALUES (:start_date, :end_date, :price, :fk_property, :fk_term, :fk_plan)
+            ");
 
             $stmt->execute([
-                ":startDate" => $data["information"]["startDate"],
-                ":endDate" => $data["information"]["endDate"],
-                ":price" => $data["dataProperty"]["rental_price"],
+                ":start_date" => $data["information"]["startDate"],
+                ":end_date" => $data["information"]["endDate"],
+                ":price" => (float) $data["dataProperty"]["rental_price"],
                 ":fk_property" => $data["dataProperty"]["id_property"],
                 ":fk_term" => $data["information"]["operationTerm"],
                 ":fk_plan" => $data["information"]["operationalPlan"]
@@ -23,7 +27,7 @@
                 operacion.id_operacion,
                 operacion.fecha_inicio,
                 operacion.fecha_vencimiento,
-                operacion.monto_total,
+                operacion.precio_inicial,
                 plan_operacion.nombre,
                 plazo_operacion.cantidad_meses,
                 locacion.calle,

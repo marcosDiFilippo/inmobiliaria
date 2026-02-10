@@ -1,8 +1,9 @@
 import styles from "./Button.module.css"
 
-export function ButtonEdit ({handleClickEdit}) {
+export function ButtonEdit ({id, handleClickEdit}) {
     return (
         <button 
+            data-id={id}
             onClick={handleClickEdit} 
             className={`${styles.button} ${styles.edit}`}
         >

@@ -4,8 +4,10 @@ import { ButtonDelete } from "../ButtonDelete/ButtonDelete"
 import { ButtonDetails } from "../ButtonDetails/ButtonDetails"
 import styles from "./Table.module.css"
 import { useFetch } from "../../hooks/useFetch"
+import { getId } from "../../hooks/useGetId"
+import { isNumber } from "../../hooks/useIsNumber"
 
-export function TableTenant ({getDataUsers, thList}) {
+export function TableTenant ({getDataUsers, thList, navigateTo}) {
     const [dataTable, setDataTable] = useState([]) 
 
     useEffect(() => {
@@ -28,11 +30,17 @@ export function TableTenant ({getDataUsers, thList}) {
     }
 
     function handleClickEdit (event) {
-        
+        const id = getId(event)
+
+        if (!isNumber(id)) {
+            return;
+        }
+
+        navigateTo(`/Tenant/Edit/${id}`)
     }
 
     function handleClickDetails (event) {
-        
+        const id = getId(event)
     }
 
     return (
@@ -54,7 +62,7 @@ export function TableTenant ({getDataUsers, thList}) {
                         <td>{tdElement.dni}</td>
                         <td>{tdElement.email}</td>
                         <td className={styles.td_actions}>
-                            <ButtonEdit handleClickEdit={handleClickEdit}></ButtonEdit>
+                            <ButtonEdit id={tdElement.id_parte_intervinente} handleClickEdit={handleClickEdit}></ButtonEdit>
                             <ButtonDelete id={tdElement.id_parte_intervinente} handleClickDelete={handleClickDelete}></ButtonDelete>
                         </td>
                         <td>

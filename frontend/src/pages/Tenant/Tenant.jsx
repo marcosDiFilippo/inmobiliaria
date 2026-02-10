@@ -2,7 +2,7 @@ import { FormTenant } from "../../components/FormTenant/FormTenant";
 import { TableTenant } from "../../components/Table/TableTenant";
 import { useUsers } from "../../hooks/useUsers";
 
-export function Tenant () {
+export function Tenant ({navigateTo}) {
     const { getDataUsers } = useUsers()
 
     const thList = [
@@ -42,9 +42,9 @@ export function Tenant () {
 
     return (
         <>
-            <FormTenant></FormTenant>
+            <FormTenant title={"Agregar Inquilino"} action={"create"} tenantFetch={null}></FormTenant>
 
-            <TableTenant getDataUsers={getDataUsers} thList={thList}></TableTenant>
+            <TableTenant getDataUsers={getDataUsers} thList={thList} navigateTo={navigateTo}></TableTenant>
         </>
     )
 }

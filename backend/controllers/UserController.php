@@ -87,6 +87,11 @@
         case "GET":
             $userController = new UserController();
 
+            if (isset($_GET["idUser"])) {
+                echo json_encode($userController->getUserRepo()->getUserById((int) $_GET["idUser"]));
+                return;
+            }
+
             echo json_encode($userController->getUserRepo()->getData());
             break;
         case "POST":

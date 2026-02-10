@@ -3,13 +3,13 @@ import styles from "./Table.module.css"
 import { useFetch } from "../../hooks/useFetch"
 import { ButtonDetails } from "../ButtonDetails/ButtonDetails"
 
-export function TableOperation () {
+export function TableOperation ({contractData}) {
     const operationsFetch = useFetch()
     const [dataTable, setDataTable] = useState([])
 
     useEffect(() => {
         operationsFetch.getDataFetch("http://localhost/inmobiliaria/backend/controllers/ContractController.php", "GET")
-    }, [])
+    }, [contractData])
 
     useEffect(() => {
         if (operationsFetch.dataFetch != null) {
@@ -26,7 +26,7 @@ export function TableOperation () {
     }, [operationsFetch.dataFetch])
 
     function handleClickDetails () {
-
+        
     }
 
     return (
@@ -44,7 +44,7 @@ export function TableOperation () {
                             Fecha Vencimiento
                         </th>
                         <th>
-                            Monto Inicio
+                            Monto Inicial
                         </th>
                         <th>
                             Plazo
@@ -66,7 +66,7 @@ export function TableOperation () {
                             </td>
                             <td>{operation.fecha_inicio}</td>
                             <td>{operation.fecha_vencimiento}</td>
-                            <td>$ {operation.monto_total}</td>
+                            <td>$ {operation.precio_inicial}</td>
                             <td>{operation.cantidad_meses} meses</td>
                             <td>{operation.nombre}</td>
                             <td>

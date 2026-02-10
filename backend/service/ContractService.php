@@ -30,11 +30,11 @@
 
                 $data["information"]["endDate"] = $endDate->format("Y-m-d");
 
-                //$this->contractRepo->insertToDatabase($data);
-
-                echo json_encode($data);
+                $this->contractRepo->insertToDatabase($data);
 
                 $connection->commit();
+
+                echo json_encode("successContract");
             }
             catch (Exception $e) {
                 $connection->rollBack();

@@ -11,6 +11,10 @@ import { TableOperation } from "../../components/Table/TableOperation.jsx";
 
 export function Operation () {
     const [counter, setCounter] = useState(1)
+    const [alert, setAlert] = useState({
+        type: "",
+        message: ""
+    })
     const [inputs, setInputs] = useState([
         {
             id: counter,
@@ -99,7 +103,7 @@ export function Operation () {
 
     function handleSubmit(event) {
         event.preventDefault()
-        
+
         const formData = new FormData(event.currentTarget)
 
         const parts = []
@@ -127,7 +131,7 @@ export function Operation () {
         })
 
         formData.append("parts", JSON.stringify(parts))
-
+        
         contractFetch.getDataFetch(
             "http://localhost/inmobiliaria/backend/controllers/ContractController.php",
             "POST",
@@ -175,14 +179,18 @@ export function Operation () {
             <h1>Contratos</h1>
 
             <h2>Ingrese el dni de las partes intevinentes</h2>
-            <ButtonAdd onClick={handleClickAdd}>
-                Agregar Parte
-            </ButtonAdd>
+            
             {
             isValid == false 
             ? <><p>No hay propiedades disponibles - Estan todas las propiedas establecidas mediante un contrato</p></> 
             : <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <Select name={"property"} options={propertyOptions}></Select>
+                <div className={styles.div_add_part}>   
+                    <ButtonAdd onClick={handleClickAdd}>
+                        Agregar Parte
+                    </ButtonAdd>
+                    <p className={styles.p_operation}>Propiedad:</p>
+                    <Select name={"property"} options={propertyOptions}></Select>
+                </div>
                 <div className={styles.operation_parts}>
                     {inputs.map(inp => (
                         <div className={styles.input_group} key={inp.id}>
@@ -253,7 +261,7 @@ export function Operation () {
             </form>}
             
             
-            <TableOperation></TableOperation>
+            <TableOperation contractData={contractFetch.dataFetch}></TableOperation>
         </>
     )
 }
